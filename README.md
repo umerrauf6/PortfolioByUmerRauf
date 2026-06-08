@@ -1,73 +1,59 @@
-# React + TypeScript + Vite
+# Umer Rauf — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal portfolio website built with Vite, React, TypeScript, and Tailwind CSS to showcase projects, skills, and contact information.
 
-Currently, two official plugins are available:
+Live demo: https://umer-rauf-portfolio.netlify.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Overview
 
-## React Compiler
+This repository powers a fast, modern portfolio site intended to present work samples, technical skills, and ways to get in touch. The UI is component-driven and easy to customize.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+- Clean, responsive layout with Tailwind CSS
+- Built with Vite for fast dev server and optimized builds
+- TypeScript for type safety across the app
+- Reusable React components for sections: Hero, About, Projects, Skills, Contact
+- Easy deployment to Netlify
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Tech Stack
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Project Structure (high level)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- `index.html` — App entry
+- `src/main.tsx` — App bootstrap
+- `src/App.tsx` — Top-level layout
+- `src/index.css` / `src/App.css` — Global styles
+- `src/components/` — Reusable UI sections (Hero, About, Projects, Skills, Contact, Navbar, Footer)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Key components included:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- `About.tsx`
+- `Contact.tsx`
+- `Footer.tsx`
+- `Hero.tsx`
+- `Navbar.tsx`
+- `Projects.tsx`
+- `Skills.tsx`
+
+## Personal Details
+
+- **Full name:** Umer Rauf
+- **Title:** Full-Stack Developer · M.Sc. Computer Science (University of Siegen, expected Jul 2026)
+- **Location:** Siegen, Germany
+- **Email:** umerrauf6@gmail.com
+- **Phone:** +49 172 591 4540
+- **GitHub:** https://github.com/umerrauf6
+- **LinkedIn:** https://linkedin.com/in/umer-rauf-953689176
+- **Website (live demo):** https://umer-rauf-portfolio.netlify.app/
+
+Tip: Contact details are already wired in `src/components/Contact.tsx` and background info is in `src/components/About.tsx` — edit them there to change what shows on the site.
+
+
+
