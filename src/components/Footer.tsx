@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion';
 import { Mail, Heart } from 'lucide-react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useRef, useMemo } from 'react';
-import * as THREE from 'three';
 
 function GitHubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -19,71 +16,79 @@ function LinkedInIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-/* ── 3D ambient particle ring for footer ─────────────────────────────── */
-function FooterParticles() {
-  const ref = useRef<THREE.Points>(null);
-  const count = 600;
-  const { positions, colors } = useMemo(() => {
-    const positions = new Float32Array(count * 3);
-    const colors    = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      const t = (i / count) * Math.PI * 2;
-      const r = 3 + (Math.random() - 0.5) * 2;
-      positions[i*3]   = Math.cos(t) * r;
-      positions[i*3+1] = (Math.random() - 0.5) * 1.5;
-      positions[i*3+2] = Math.sin(t) * r;
-      const c = Math.random();
-      if (c < 0.5) { colors[i*3]=0; colors[i*3+1]=0.83; colors[i*3+2]=1; }
-      else          { colors[i*3]=0.66; colors[i*3+1]=0.33; colors[i*3+2]=0.97; }
-    }
-    return { positions, colors };
-  }, []);
-  useFrame(({ clock }) => {
-    if (ref.current) ref.current.rotation.y = clock.elapsedTime * 0.12;
-  });
-  return (
-    <points ref={ref}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-        <bufferAttribute attach="attributes-color"    args={[colors, 3]} />
-      </bufferGeometry>
-      <pointsMaterial size={0.06} vertexColors transparent opacity={0.7} sizeAttenuation />
-    </points>
-  );
-}
-
 export default function Footer() {
   const year = new Date().getFullYear();
   const links = [
-    { href:'https://github.com/umerrauf6',                Icon:GitHubIcon,  label:'GitHub' },
-    { href:'https://linkedin.com/in/umer-rauf-953689176', Icon:LinkedInIcon, label:'LinkedIn' },
-    { href:'mailto:umerrauf6@gmail.com',                  Icon:Mail,         label:'Email' },
+    { href: 'https://github.com/umerrauf6',                Icon: GitHubIcon,  label: 'GitHub' },
+    { href: 'https://linkedin.com/in/umer-rauf-953689176', Icon: LinkedInIcon, label: 'LinkedIn' },
+    { href: 'mailto:umerrauf6@gmail.com',                  Icon: Mail,        label: 'Email' },
   ];
 
   return (
-    <footer className="relative overflow-hidden" style={{ borderTop:'1px solid rgba(0,212,255,0.08)', paddingTop:0 }}>
-      {/* 3D particle ring background */}
-      <div className="absolute inset-0 pointer-events-none opacity-40">
-        <Canvas camera={{ position:[0, 2, 7], fov:55 }}>
-          <ambientLight intensity={0.3} />
-          <pointLight position={[0, 0, 3]} intensity={2} color="#00d4ff" />
-          <FooterParticles />
-        </Canvas>
+    <footer className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+
+      {/* CSS gold ring particle decoration */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Spinning outer ring */}
+        <div
+          className="absolute top-1/2 left-1/2 rounded-full"
+          style={{
+            width: 400,
+            height: 400,
+            border: '1px solid rgba(212,175,55,0.08)',
+            transform: 'translate(-50%, -50%)',
+            animation: 'footerRing 40s linear infinite',
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 rounded-full"
+          style={{
+            width: 280,
+            height: 280,
+            border: '1px solid rgba(212,175,55,0.06)',
+            transform: 'translate(-50%, -50%)',
+            animation: 'footerRing 28s linear infinite reverse',
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 rounded-full"
+          style={{
+            width: 160,
+            height: 160,
+            border: '1px solid rgba(212,175,55,0.05)',
+            transform: 'translate(-50%, -50%)',
+            animation: 'footerRing 18s linear infinite',
+          }}
+        />
+        {/* Ambient gold glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-32 rounded-full"
+          style={{
+            background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.04), transparent 70%)',
+            filter: 'blur(30px)',
+          }}
+        />
       </div>
 
       <div className="section-inner relative z-10 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+
+          {/* Brand */}
           <div className="flex flex-col items-center md:items-start gap-1">
             <span className="font-display font-black text-xl gradient-text">Umer Rauf</span>
-            <span className="text-xs" style={{ color:'rgba(160,195,220,0.5)', fontFamily:'var(--font-mono)' }}>Full-Stack Developer · Siegen, Germany</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+              Full-Stack Developer · Siegen, Germany
+            </span>
           </div>
 
-          <div className="flex items-center gap-2 text-xs" style={{ color:'rgba(160,195,220,0.5)' }}>
+          {/* Built with */}
+          <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
             <span>Built with</span>
-            <Heart size={11} className="text-pink-400 fill-pink-400" />
+            <Heart size={11} className="text-yellow-500 fill-yellow-500" />
             <span>React · Three.js · Framer Motion</span>
           </div>
 
+          {/* Social icons */}
           <div className="flex items-center gap-3">
             {links.map(({ href, Icon, label }) => (
               <motion.a
@@ -92,20 +97,21 @@ export default function Footer() {
                 target={href.startsWith('http') ? '_blank' : undefined}
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={label}
-                className="w-9 h-9 flex items-center justify-center bracket-corners transition-all duration-200"
-                style={{ background:'rgba(0,212,255,0.06)', border:'1px solid rgba(0,212,255,0.2)', color:'rgba(160,215,235,0.7)' }}
-                whileHover={{ scale:1.1, y:-2 }}
-                whileTap={{ scale:0.95 }}
+                className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-200 gold-border"
+                style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)' }}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Icon size={15} />
               </motion.a>
             ))}
           </div>
+
         </div>
 
-        <div className="mt-8 pt-6 text-center" style={{ borderTop:'1px solid rgba(0,212,255,0.06)' }}>
-          <p className="text-xs" style={{ color:'rgba(160,195,220,0.3)', fontFamily:'var(--font-mono)' }}>
-            © {year} Umer Rauf · All rights reserved.
+        <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.06)' }}>
+          <p className="text-xs" style={{ color: 'rgba(212,175,55,0.25)', fontFamily: 'var(--font-mono)' }}>
+            © {year} Umer Rauf · All rights reserved · Siegen, Germany
           </p>
         </div>
       </div>

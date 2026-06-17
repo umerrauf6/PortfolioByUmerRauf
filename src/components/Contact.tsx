@@ -1,8 +1,52 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, Suspense } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, ExternalLink, Send, CheckCircle2 } from 'lucide-react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+
+/* ─── Gold Ring System ─── */
+function GoldRings() {
+  const r1   = useRef<THREE.Mesh>(null);
+  const r2   = useRef<THREE.Mesh>(null);
+  const r3   = useRef<THREE.Mesh>(null);
+  const core = useRef<THREE.Mesh>(null);
+  const glow = useRef<THREE.Mesh>(null);
+
+  useFrame(({ clock }) => {
+    const t = clock.elapsedTime;
+    if (r1.current)   { r1.current.rotation.z = t * 0.45; }
+    if (r2.current)   { r2.current.rotation.x = t * 0.32; r2.current.rotation.z = -t * 0.18; }
+    if (r3.current)   { r3.current.rotation.y = t * 0.28; r3.current.rotation.x = t * 0.12; }
+    if (core.current) { core.current.rotation.y = t * 0.22; core.current.scale.setScalar(1 + Math.sin(t * 1.6) * 0.06); }
+    if (glow.current) { glow.current.scale.setScalar(1 + Math.sin(t * 0.9) * 0.08); }
+  });
+
+  return (
+    <group>
+      <mesh ref={core}>
+        <sphereGeometry args={[0.6, 24, 24]} />
+        <meshStandardMaterial color="#1a0f00" emissive="#D4AF37" emissiveIntensity={1.4} roughness={0.05} metalness={0.98} />
+      </mesh>
+      <mesh ref={glow}>
+        <sphereGeometry args={[1.0, 16, 16]} />
+        <meshBasicMaterial color="#D4AF37" transparent opacity={0.05} />
+      </mesh>
+      <mesh ref={r1} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[1.6, 0.02, 16, 120]} />
+        <meshStandardMaterial color="#D4AF37" emissive="#D4AF37" emissiveIntensity={0.7} metalness={0.9} roughness={0.1} transparent opacity={0.85} />
+      </mesh>
+      <mesh ref={r2} rotation={[Math.PI / 3, 0, 0]}>
+        <torusGeometry args={[2.3, 0.014, 16, 120]} />
+        <meshStandardMaterial color="#F5D67B" emissive="#F5D67B" emissiveIntensity={0.4} metalness={0.9} roughness={0.1} transparent opacity={0.6} />
+      </mesh>
+      <mesh ref={r3} rotation={[0, Math.PI / 4, 0]}>
+        <torusGeometry args={[3.0, 0.009, 16, 120]} />
+        <meshBasicMaterial color="#B8960C" transparent opacity={0.35} />
+      </mesh>
+      <pointLight position={[0, 0, 0]} intensity={3} color="#D4AF37" distance={12} />
+    </group>
+  );
+}
 
 function GitHubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -19,68 +63,19 @@ function LinkedInIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-/* ── 3D: Animated wireframe sphere for contact section ───────────────── */
-function ContactSphere() {
-  const outer = useRef<THREE.Mesh>(null);
-  const inner = useRef<THREE.Mesh>(null);
-  const ring1 = useRef<THREE.Mesh>(null);
-  const ring2 = useRef<THREE.Mesh>(null);
-
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    if (outer.current) { outer.current.rotation.y = t * 0.2; outer.current.rotation.x = t * 0.08; }
-    if (inner.current) { inner.current.rotation.y = -t * 0.35; inner.current.rotation.z = t * 0.12; }
-    if (ring1.current) { ring1.current.rotation.z = t * 0.5; }
-    if (ring2.current) { ring2.current.rotation.x = t * 0.4; ring2.current.rotation.z = -t * 0.2; }
-  });
-
-  return (
-    <group>
-      <mesh ref={outer}>
-        <sphereGeometry args={[1.6, 16, 16]} />
-        <meshBasicMaterial color="#00d4ff" wireframe transparent opacity={0.2} />
-      </mesh>
-      <mesh ref={inner}>
-        <icosahedronGeometry args={[0.9, 1]} />
-        <meshBasicMaterial color="#a855f7" wireframe transparent opacity={0.35} />
-      </mesh>
-      <mesh ref={ring1} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[2.1, 0.012, 16, 100]} />
-        <meshBasicMaterial color="#00d4ff" transparent opacity={0.4} />
-      </mesh>
-      <mesh ref={ring2} rotation={[Math.PI / 3, 0, 0]}>
-        <torusGeometry args={[2.5, 0.008, 16, 100]} />
-        <meshBasicMaterial color="#e879f9" transparent opacity={0.3} />
-      </mesh>
-      <pointLight position={[0, 0, 0]} intensity={2} color="#00d4ff" distance={6} />
-    </group>
-  );
-}
-
 const contactLinks = [
-  { id:'github-link', Icon:GitHubIcon, label:'GitHub', value:'github.com/umerrauf6', href:'https://github.com/umerrauf6', accentColor:'rgba(240,246,255,0.8)', borderColor:'rgba(255,255,255,0.1)' },
-  { id:'linkedin-link', Icon:LinkedInIcon, label:'LinkedIn', value:'linkedin.com/in/umer-rauf-953689176', href:'https://linkedin.com/in/umer-rauf-953689176', accentColor:'#63b3ed', borderColor:'rgba(99,179,237,0.2)' },
-  { id:'email-link', Icon:Mail, label:'Email', value:'umerrauf6@gmail.com', href:'mailto:umerrauf6@gmail.com', accentColor:'#a855f7', borderColor:'rgba(168,85,247,0.2)' },
-  { id:'phone-link', Icon:Phone, label:'Phone', value:'+49 172 591 4540', href:'tel:+4917259145400', accentColor:'#e879f9', borderColor:'rgba(232,121,249,0.2)' },
-  { id:'location-info', Icon:MapPin, label:'Location', value:'Siegen, Germany 🇩🇪', href:'https://maps.google.com/?q=Siegen,Germany', accentColor:'rgba(200,225,245,0.6)', borderColor:'rgba(255,255,255,0.07)' },
+  { id: 'github-link',   Icon: GitHubIcon,  label: 'GitHub',   value: 'github.com/umerrauf6',                href: 'https://github.com/umerrauf6' },
+  { id: 'linkedin-link', Icon: LinkedInIcon, label: 'LinkedIn', value: 'linkedin.com/in/umer-rauf-953689176', href: 'https://linkedin.com/in/umer-rauf-953689176' },
+  { id: 'email-link',    Icon: Mail,         label: 'Email',    value: 'umerrauf6@gmail.com',                 href: 'mailto:umerrauf6@gmail.com' },
+  { id: 'phone-link',    Icon: Phone,        label: 'Phone',    value: '+49 172 591 4540',                    href: 'tel:+4917259145400' },
+  { id: 'location-info', Icon: MapPin,       label: 'Location', value: 'Siegen, Germany 🇩🇪',                href: 'https://maps.google.com/?q=Siegen,Germany' },
 ];
 
-const inputStyle: React.CSSProperties = {
-  width:'100%', background:'rgba(255,255,255,0.04)', border:'1px solid rgba(0,212,255,0.12)',
-  borderRadius:'10px', padding:'12px 16px', fontSize:'14px', color:'rgba(230,245,255,0.9)',
-  outline:'none', transition:'border-color 0.2s, box-shadow 0.2s', fontFamily:'inherit',
-};
-const labelStyle: React.CSSProperties = {
-  display:'block', fontSize:'11px', fontWeight:600, letterSpacing:'0.1em',
-  textTransform:'uppercase' as const, color:'rgba(160,195,220,0.6)', marginBottom:'7px',
-};
-
 export default function Contact() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin:'-80px' });
-  const [formData, setFormData] = useState({ name:'', email:'', subject:'', message:'' });
+  const ref     = useRef(null);
+  const inView  = useInView(ref, { once: true, margin: '-80px' });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [focused, setFocused] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,139 +85,182 @@ export default function Contact() {
     setSubmitted(true);
   };
 
-  const focusStyle = (field: string): React.CSSProperties => ({
-    ...inputStyle,
-    borderColor: focused === field ? 'rgba(0,212,255,0.5)' : 'rgba(0,212,255,0.12)',
-    boxShadow:   focused === field ? '0 0 0 3px rgba(0,212,255,0.07)' : 'none',
-  });
-
   return (
-    <section id="contact" className="section" style={{ position:'relative', overflow:'hidden' }}>
+    <section id="contact" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
 
-      {/* 3D contact sphere — subtle background left side */}
-      <div className="absolute left-0 top-0 bottom-0 w-80 pointer-events-none opacity-30" style={{ zIndex:0 }}>
-        <Canvas camera={{ position:[0, 0, 6], fov:50 }}>
-          <ambientLight intensity={0.2} />
-          <pointLight position={[3, 3, 3]} intensity={3} color="#00d4ff" />
-          <pointLight position={[-2, -2, 2]} intensity={2} color="#a855f7" />
-          <ContactSphere />
+      {/* Real 3D background — gold rings */}
+      <div className="absolute right-0 top-0 bottom-0 w-96 pointer-events-none overflow-hidden" style={{ zIndex: 0, opacity: 0.35 }}>
+        <Canvas camera={{ position: [0, 0, 8], fov: 48 }} gl={{ antialias: true, alpha: false }}>
+          <color attach="background" args={['#0B0B0D']} />
+          <ambientLight intensity={0.1} />
+          <pointLight position={[3, 3, 3]} intensity={4} color="#D4AF37" />
+          <Suspense fallback={null}>
+            <GoldRings />
+          </Suspense>
         </Canvas>
       </div>
 
-      <div className="section-inner" ref={ref} style={{ position:'relative', zIndex:1 }}>
-        <motion.div initial={{ opacity:0, y:20 }} animate={inView ? { opacity:1, y:0 } : {}} transition={{ duration:0.7 }} className="mb-10 text-center">
+      <div className="section-inner" ref={ref} style={{ position: 'relative', zIndex: 1 }}>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="mb-12 text-center"
+        >
           <p className="section-label justify-center">Get In Touch</p>
-          <h2 className="section-title">Let's <span className="gradient-text">Connect</span></h2>
-          <p className="max-w-lg mx-auto text-base" style={{ color:'rgba(200,225,245,0.6)' }}>
+          <h2 className="section-title">
+            Let's <span className="gradient-text">Connect</span>
+          </h2>
+          <p className="max-w-lg mx-auto text-base" style={{ color: 'var(--text-muted)' }}>
             Whether you have a project in mind, want to discuss opportunities, or just want to say hello — I'd love to hear from you.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
 
-          {/* Contact Links */}
-          <motion.div initial={{ opacity:0, x:-30 }} animate={inView ? { opacity:1, x:0 } : {}} transition={{ duration:0.7, delay:0.1 }}
-            className="glass rounded-2xl p-8 flex flex-col gap-4 relative overflow-hidden holo-border">
-            <div className="absolute top-0 left-0 w-64 h-64 rounded-full pointer-events-none" style={{ background:'radial-gradient(ellipse,rgba(168,85,247,0.07),transparent)', filter:'blur(50px)' }} />
+          {/* Contact info */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="glass rounded-2xl p-8 flex flex-col gap-4 relative overflow-hidden gold-border"
+          >
+            <div className="absolute top-0 left-0 w-64 h-64 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.06), transparent)', filter: 'blur(50px)' }} />
             <div className="relative z-10">
-              <h3 className="font-display font-bold text-xl mb-2" style={{ color:'rgba(240,246,255,0.9)' }}>Contact Info</h3>
-              <p className="text-sm mb-5" style={{ color:'rgba(200,225,245,0.55)' }}>Feel free to reach out through any of these channels.</p>
+              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Contact Info</h3>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Feel free to reach out through any of these channels.</p>
+
               <div className="flex flex-col gap-3">
-                {contactLinks.map(({ id, Icon, label, value, href, accentColor, borderColor }, i) => (
-                  <motion.a key={id} id={id} href={href}
+                {contactLinks.map(({ id, Icon, label, value, href }, i) => (
+                  <motion.a
+                    key={id} id={id} href={href}
                     target={href.startsWith('http') ? '_blank' : undefined}
                     rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                    initial={{ opacity:0, x:-20 }} animate={inView ? { opacity:1, x:0 } : {}}
-                    transition={{ duration:0.5, delay:0.2 + i * 0.08 }}
-                    className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300 group holo-border"
-                    style={{ background:'rgba(255,255,255,0.02)', color:accentColor, border:`1px solid ${borderColor}` }}
-                    whileHover={{ x:5, scale:1.01 }}>
-                    <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
-                      style={{ background:'rgba(255,255,255,0.04)', border:`1px solid ${borderColor}` }}>
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={inView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
+                    className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300 group"
+                    style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)', color: '#F5D67B' }}
+                    whileHover={{ x: 5, scale: 1.01 } as any}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}
+                    >
                       <Icon size={17} />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold uppercase tracking-widest mb-0.5" style={{ color:'rgba(160,195,220,0.5)' }}>{label}</p>
-                      <p className="text-sm font-medium truncate">{value}</p>
+                      <p className="text-xs font-semibold uppercase tracking-widest mb-0.5" style={{ color: 'var(--text-muted)' }}>{label}</p>
+                      <p className="text-sm font-medium truncate" style={{ color: '#F5F5F5' }}>{value}</p>
                     </div>
                     <ExternalLink size={13} className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity duration-200" />
                   </motion.a>
                 ))}
               </div>
-              <motion.div initial={{ opacity:0, y:10 }} animate={inView ? { opacity:1, y:0 } : {}} transition={{ duration:0.5, delay:0.7 }}
-                className="mt-5 flex items-center gap-3 p-4 rounded-xl" style={{ background:'rgba(0,212,255,0.05)', border:'1px solid rgba(0,212,255,0.15)' }}>
+
+              {/* Available indicator */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: 0.7 }}
+                className="mt-5 flex items-center gap-3 p-4 rounded-xl"
+                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}
+              >
                 <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background:'#00ff88' }} />
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5" style={{ background:'#00ff88' }} />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
                 </span>
-                <span className="text-sm font-medium" style={{ color:'#00d4ff' }}>Available for new opportunities</span>
+                <span className="text-sm font-medium" style={{ color: '#D4AF37' }}>Available for new opportunities</span>
               </motion.div>
             </div>
           </motion.div>
 
-          {/* Contact Form */}
-          <motion.div initial={{ opacity:0, x:30 }} animate={inView ? { opacity:1, x:0 } : {}} transition={{ duration:0.7, delay:0.2 }}
-            className="glass rounded-2xl p-8 flex flex-col relative overflow-hidden holo-border">
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none" style={{ background:'radial-gradient(ellipse,rgba(0,212,255,0.06),transparent)', filter:'blur(40px)' }} />
+          {/* Contact form */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="glass rounded-2xl p-8 flex flex-col relative overflow-hidden gold-border"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.05), transparent)', filter: 'blur(40px)' }} />
             <div className="relative z-10 flex flex-col flex-1">
-              <h3 className="font-display font-bold text-xl mb-2" style={{ color:'rgba(240,246,255,0.9)' }}>Send a Message</h3>
-              <p className="text-sm mb-6" style={{ color:'rgba(200,225,245,0.55)' }}>Fill in the form — it will open your email client ready to send.</p>
+              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Send a Message</h3>
+              <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Fill in the form — it will open your email client ready to send.</p>
 
               <AnimatePresence mode="wait">
                 {!submitted ? (
-                  <motion.form key="form" onSubmit={handleSubmit} initial={{ opacity:1 }} exit={{ opacity:0, y:-10 }} className="flex flex-col flex-1 gap-4">
+                  <motion.form
+                    key="form" onSubmit={handleSubmit}
+                    initial={{ opacity: 1 }} exit={{ opacity: 0, y: -10 }}
+                    className="flex flex-col flex-1 gap-4"
+                  >
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
-                        <label htmlFor="contact-name" style={labelStyle}>Name</label>
+                        <label htmlFor="contact-name" className="block text-xs font-semibold uppercase tracking-widest mb-2"
+                          style={{ color: 'var(--text-muted)' }}>Name</label>
                         <input id="contact-name" type="text" required placeholder="Your name"
-                          value={formData.name} onChange={e => setFormData(d => ({ ...d, name:e.target.value }))}
-                          onFocus={() => setFocused('name')} onBlur={() => setFocused(null)} style={focusStyle('name')} />
+                          className="gold-input" value={formData.name}
+                          onChange={e => setFormData(d => ({ ...d, name: e.target.value }))} />
                       </div>
                       <div>
-                        <label htmlFor="contact-email" style={labelStyle}>Email</label>
+                        <label htmlFor="contact-email" className="block text-xs font-semibold uppercase tracking-widest mb-2"
+                          style={{ color: 'var(--text-muted)' }}>Email</label>
                         <input id="contact-email" type="email" required placeholder="you@example.com"
-                          value={formData.email} onChange={e => setFormData(d => ({ ...d, email:e.target.value }))}
-                          onFocus={() => setFocused('email')} onBlur={() => setFocused(null)} style={focusStyle('email')} />
+                          className="gold-input" value={formData.email}
+                          onChange={e => setFormData(d => ({ ...d, email: e.target.value }))} />
                       </div>
                     </div>
                     <div>
-                      <label htmlFor="contact-subject" style={labelStyle}>Subject</label>
+                      <label htmlFor="contact-subject" className="block text-xs font-semibold uppercase tracking-widest mb-2"
+                        style={{ color: 'var(--text-muted)' }}>Subject</label>
                       <input id="contact-subject" type="text" placeholder="What's this about?"
-                        value={formData.subject} onChange={e => setFormData(d => ({ ...d, subject:e.target.value }))}
-                        onFocus={() => setFocused('subject')} onBlur={() => setFocused(null)} style={focusStyle('subject')} />
+                        className="gold-input" value={formData.subject}
+                        onChange={e => setFormData(d => ({ ...d, subject: e.target.value }))} />
                     </div>
                     <div className="flex-1 flex flex-col">
-                      <label htmlFor="contact-message" style={labelStyle}>Message</label>
-                      <textarea id="contact-message" required rows={5} placeholder="Tell me about your project or opportunity..."
-                        value={formData.message} onChange={e => setFormData(d => ({ ...d, message:e.target.value }))}
-                        onFocus={() => setFocused('message')} onBlur={() => setFocused(null)}
-                        style={{ ...focusStyle('message'), resize:'none', flex:1 }} />
+                      <label htmlFor="contact-message" className="block text-xs font-semibold uppercase tracking-widest mb-2"
+                        style={{ color: 'var(--text-muted)' }}>Message</label>
+                      <textarea id="contact-message" required rows={5}
+                        placeholder="Tell me about your project or opportunity..."
+                        className="gold-input flex-1" value={formData.message}
+                        onChange={e => setFormData(d => ({ ...d, message: e.target.value }))} />
                     </div>
-                    <motion.button id="submit-contact-form" type="submit" className="btn-primary w-full justify-center"
-                      whileHover={{ scale:1.01 }} whileTap={{ scale:0.98 }}>
+                    <motion.button id="submit-contact-form" type="submit"
+                      className="btn-primary w-full justify-center"
+                      whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                       <Send size={15} /> Send via Email Client
                     </motion.button>
-                    <p className="text-center text-xs" style={{ color:'rgba(160,195,220,0.35)' }}>
+                    <p className="text-center text-xs" style={{ color: 'rgba(212,175,55,0.35)' }}>
                       Opens your email app with message pre-filled.
                     </p>
                   </motion.form>
                 ) : (
-                  <motion.div key="success" initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }}
+                  <motion.div key="success"
+                    initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
                     className="flex flex-col items-center justify-center flex-1 gap-5 text-center py-8">
-                    <motion.div initial={{ scale:0 }} animate={{ scale:1 }} transition={{ type:'spring', stiffness:400, damping:20, delay:0.1 }}>
-                      <CheckCircle2 size={60} style={{ color:'#00d4ff' }} />
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
+                      transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}>
+                      <CheckCircle2 size={60} style={{ color: '#D4AF37' }} />
                     </motion.div>
                     <div>
-                      <h3 className="font-display font-bold text-xl mb-2" style={{ color:'rgba(240,246,255,0.9)' }}>Email Client Opened!</h3>
-                      <p className="text-sm max-w-xs" style={{ color:'rgba(200,225,245,0.55)' }}>Your email app should be open with the message pre-filled. Just hit send!</p>
+                      <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Email Client Opened!</h3>
+                      <p className="text-sm max-w-xs" style={{ color: 'var(--text-muted)' }}>
+                        Your email app should be open. Just hit send!
+                      </p>
                     </div>
-                    <button onClick={() => { setSubmitted(false); setFormData({ name:'', email:'', subject:'', message:'' }); }} className="btn-secondary text-sm py-2 px-6">Write Another</button>
+                    <button
+                      onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', subject: '', message: '' }); }}
+                      className="btn-secondary text-sm py-2 px-6">
+                      Write Another
+                    </button>
                   </motion.div>
                 )}
               </AnimatePresence>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Mail } from 'lucide-react';
 
 function GitHubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -9,7 +9,6 @@ function GitHubIcon({ size = 16 }: { size?: number }) {
     </svg>
   );
 }
-
 function LinkedInIcon({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
@@ -18,17 +17,18 @@ function LinkedInIcon({ size = 16 }: { size?: number }) {
   );
 }
 
+
 const navLinks = [
-  { href: '#hero', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#skills', label: 'Skills' },
-  { href: '#projects', label: 'Projects' },
-  { href: '#contact', label: 'Contact' },
+  { href: '#hero',     label: 'Home',     num: '01' },
+  { href: '#about',    label: 'About',    num: '02' },
+  { href: '#skills',   label: 'Skills',   num: '03' },
+  { href: '#projects', label: 'Projects', num: '04' },
+  { href: '#contact',  label: 'Contact',  num: '05' },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled,      setScrolled]      = useState(false);
+  const [mobileOpen,    setMobileOpen]    = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
@@ -47,6 +47,14 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock body scroll when sidebar is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  const closeMenu = () => setMobileOpen(false);
+
   return (
     <>
       <motion.header
@@ -55,16 +63,21 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         style={{
-          background: scrolled ? 'rgba(10,10,10,0.8)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : '1px solid transparent',
+          background: scrolled ? 'rgba(11,11,13,0.82)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(24px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(212,175,55,0.12)' : '1px solid transparent',
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between" style={{ height: 70 }}>
+        <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
+
           {/* Logo */}
-          <motion.a href="#hero" className="font-display font-bold text-xl tracking-tight" whileHover={{ scale: 1.03 }}>
-            <span className="gradient-text">UR</span>
-            <span style={{ color: 'rgba(255,255,255,0.6)' }}>.</span>
+          <motion.a
+            href="#hero"
+            className="font-display font-black text-xl tracking-tight gradient-text relative z-10"
+            whileHover={{ scale: 1.05 }}
+          >
+            UR<span style={{ color: 'rgba(212,175,55,0.4)' }}>.</span>
           </motion.a>
 
           {/* Desktop Nav */}
@@ -74,20 +87,15 @@ export default function Navbar() {
               const isActive = activeSection === id;
               return (
                 <a
-                  key={href}
-                  href={href}
-                  className="relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200"
-                  style={{ color: isActive ? '#fff' : 'rgba(255,255,255,0.5)' }}
+                  key={href} href={href}
+                  className="relative px-4 py-2 text-sm font-medium transition-all duration-200 group"
+                  style={{ color: isActive ? '#F5D67B' : 'rgba(245,245,245,0.5)' }}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-active"
-                      className="absolute inset-0 rounded-lg"
-                      style={{ background: 'rgba(255,255,255,0.07)' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                    />
-                  )}
                   <span className="relative z-10">{label}</span>
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px transition-all duration-300"
+                    style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)', width: isActive ? '60%' : '0%' }} />
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px opacity-0 group-hover:opacity-100 transition-all duration-300"
+                    style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)', width: '40%' }} />
                 </a>
               );
             })}
@@ -95,75 +103,200 @@ export default function Navbar() {
 
           {/* Desktop Socials + CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <a
-              href="https://github.com/umerrauf6"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg glass flex items-center justify-center transition-all"
-              style={{ color: 'rgba(255,255,255,0.5)' }}
-              aria-label="GitHub"
-            >
-              <GitHubIcon size={16} />
-            </a>
-            <a
-              href="https://linkedin.com/in/umer-rauf-953689176"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-9 h-9 rounded-lg glass flex items-center justify-center transition-all"
-              style={{ color: 'rgba(255,255,255,0.5)' }}
-              aria-label="LinkedIn"
-            >
-              <LinkedInIcon size={16} />
-            </a>
+            {[
+              { href: 'https://github.com/umerrauf6', label: 'GitHub', Icon: GitHubIcon },
+              { href: 'https://linkedin.com/in/umer-rauf-953689176', label: 'LinkedIn', Icon: LinkedInIcon },
+            ].map(({ href, label, Icon }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 gold-border"
+                style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)' }}
+                aria-label={label}>
+                <Icon size={15} />
+              </a>
+            ))}
             <a href="mailto:umerrauf6@gmail.com" className="btn-primary py-2 px-5 text-sm">
               Hire Me
             </a>
           </div>
 
-          {/* Mobile menu toggle */}
-          <button
+          {/* Mobile hamburger */}
+          <motion.button
             id="mobile-menu-toggle"
-            className="md:hidden w-10 h-10 glass rounded-lg flex items-center justify-center"
-            style={{ color: 'rgba(255,255,255,0.6)' }}
+            className="md:hidden relative z-[60] w-11 h-11 rounded-xl flex flex-col items-center justify-center gap-1.5"
+            style={{
+              background: mobileOpen ? 'rgba(212,175,55,0.12)' : 'rgba(212,175,55,0.06)',
+              border: '1px solid rgba(212,175,55,0.25)',
+              color: 'rgba(212,175,55,0.9)',
+            }}
             onClick={() => setMobileOpen(v => !v)}
             aria-label="Toggle menu"
+            whileTap={{ scale: 0.92 }}
           >
-            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
+            <AnimatePresence mode="wait">
+              {mobileOpen ? (
+                <motion.div key="x"
+                  initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <X size={20} />
+                </motion.div>
+              ) : (
+                <motion.div key="menu"
+                  initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.2 }}>
+                  <Menu size={20} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
         </div>
       </motion.header>
 
-      {/* Mobile Drawer */}
+      {/* ── Mobile Sidebar Overlay ── */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 z-40 glass-strong p-6 flex flex-col gap-4 md:hidden"
-            style={{ top: 70, borderBottom: '1px solid rgba(255,255,255,0.08)' }}
-          >
-            {navLinks.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className="text-lg font-semibold py-2 transition-colors"
-                style={{ color: 'rgba(255,255,255,0.8)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-              >
-                {label}
-              </a>
-            ))}
-            <div className="flex gap-3 pt-2">
-              <a href="https://github.com/umerrauf6" target="_blank" rel="noopener noreferrer" className="btn-secondary py-2 px-4 text-sm flex-1 justify-center">
-                <GitHubIcon size={15} /> GitHub
-              </a>
-              <a href="mailto:umerrauf6@gmail.com" className="btn-primary py-2 px-4 text-sm flex-1 justify-center">
-                <span>Hire Me</span>
-              </a>
-            </div>
-          </motion.div>
+          <>
+            {/* Backdrop */}
+            <motion.div
+              key="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[55] md:hidden"
+              style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+              onClick={closeMenu}
+            />
+
+            {/* Sidebar panel — slides from top-right corner */}
+            <motion.div
+              key="sidebar"
+              initial={{ opacity: 0, x: '100%', scale: 0.95 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: '100%', scale: 0.95 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 32 }}
+              className="fixed top-0 right-0 z-[58] md:hidden flex flex-col"
+              style={{
+                width: 'min(85vw, 340px)',
+                height: '100dvh',
+                background: 'rgba(11,11,13,0.97)',
+                backdropFilter: 'blur(40px)',
+                WebkitBackdropFilter: 'blur(40px)',
+                borderLeft: '1px solid rgba(212,175,55,0.18)',
+                boxShadow: '-20px 0 80px rgba(0,0,0,0.6), -2px 0 0 rgba(212,175,55,0.1)',
+              }}
+            >
+              {/* Corner gold accent */}
+              <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at top right, rgba(212,175,55,0.15), transparent 70%)' }} />
+              <div className="absolute bottom-0 left-0 w-40 h-40 pointer-events-none"
+                style={{ background: 'radial-gradient(ellipse at bottom left, rgba(212,175,55,0.07), transparent 70%)' }} />
+
+              {/* Header row */}
+              <div className="flex items-center justify-between px-6 pt-6 pb-4"
+                style={{ borderBottom: '1px solid rgba(212,175,55,0.1)' }}>
+                <span className="font-display font-black text-xl gradient-text">
+                  UR<span style={{ color: 'rgba(212,175,55,0.35)' }}>.</span>
+                </span>
+                <motion.button
+                  onClick={closeMenu}
+                  className="w-9 h-9 rounded-lg flex items-center justify-center"
+                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.8)' }}
+                  whileTap={{ scale: 0.9 }}>
+                  <X size={16} />
+                </motion.button>
+              </div>
+
+              {/* Nav links */}
+              <nav className="flex flex-col flex-1 px-5 py-6 gap-1 overflow-y-auto">
+                {navLinks.map(({ href, label, num }, i) => {
+                  const id = href.replace('#', '');
+                  const isActive = activeSection === id;
+                  return (
+                    <motion.a
+                      key={href} href={href}
+                      onClick={closeMenu}
+                      initial={{ opacity: 0, x: 40 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.05 + i * 0.07, type: 'spring', stiffness: 300, damping: 30 }}
+                      className="flex items-center gap-4 px-4 py-4 rounded-xl relative group overflow-hidden"
+                      style={{
+                        background: isActive ? 'rgba(212,175,55,0.1)' : 'transparent',
+                        border: `1px solid ${isActive ? 'rgba(212,175,55,0.3)' : 'transparent'}`,
+                        transition: 'all 0.2s',
+                      }}
+                      whileHover={{ x: 6 } as any}
+                      whileTap={{ scale: 0.97 }}
+                    >
+                      {/* Number */}
+                      <span className="font-mono text-xs tabular-nums flex-shrink-0"
+                        style={{ color: 'rgba(212,175,55,0.45)', fontFamily: 'var(--font-mono)' }}>
+                        {num}
+                      </span>
+                      {/* Label */}
+                      <span className="font-display font-bold text-lg"
+                        style={{ color: isActive ? '#F5D67B' : 'rgba(245,245,245,0.8)' }}>
+                        {label}
+                      </span>
+                      {/* Active indicator */}
+                      {isActive && (
+                        <motion.div
+                          layoutId="activeIndicator"
+                          className="ml-auto w-1.5 h-1.5 rounded-full"
+                          style={{ background: '#D4AF37', boxShadow: '0 0 8px #D4AF37' }}
+                        />
+                      )}
+                      {/* Hover sweep */}
+                      <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{ background: 'rgba(212,175,55,0.04)', borderRadius: 12 }} />
+                    </motion.a>
+                  );
+                })}
+              </nav>
+
+              {/* Bottom section */}
+              <div className="px-5 pb-8 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+                {/* Social row */}
+                <div className="flex gap-3 mb-4">
+                  {[
+                    { href: 'https://github.com/umerrauf6', label: 'GitHub', Icon: GitHubIcon },
+                    { href: 'https://linkedin.com/in/umer-rauf-953689176', label: 'LinkedIn', Icon: LinkedInIcon },
+                    { href: 'mailto:umerrauf6@gmail.com', label: 'Email', Icon: Mail },
+                  ].map(({ href, label, Icon }, i) => (
+                    <motion.a
+                      key={label} href={href}
+                      target={href.startsWith('http') ? '_blank' : undefined}
+                      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      aria-label={label}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 + i * 0.06 }}
+                      className="flex-1 h-11 rounded-xl flex items-center justify-center"
+                      style={{ background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.8)' }}
+                      whileTap={{ scale: 0.93 }}
+                    >
+                      <Icon size={16} />
+                    </motion.a>
+                  ))}
+                </div>
+                {/* CTA */}
+                <motion.a
+                  href="mailto:umerrauf6@gmail.com"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.55 }}
+                  className="btn-primary w-full justify-center text-sm py-3"
+                  onClick={closeMenu}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  Hire Me
+                </motion.a>
+                {/* Mono label */}
+                <p className="text-center mt-4 text-xs" style={{ fontFamily: 'var(--font-mono)', color: 'rgba(212,175,55,0.3)', letterSpacing: '0.15em' }}>
+                  UMER RAUF · PORTFOLIO
+                </p>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>

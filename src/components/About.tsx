@@ -1,138 +1,241 @@
-import { useRef } from 'react';
+import { useRef, useState, useEffect, Suspense } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Briefcase, GraduationCap, MapPin, Calendar, Award, Globe } from 'lucide-react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Reveal3D } from './Reveal3D';
 import * as THREE from 'three';
 
-function HelixBg() {
-  const group = useRef<THREE.Group>(null);
+/* ── Gold Crystal for About sidebar ─── */
+function GoldCrystal() {
+  const outer = useRef<THREE.Mesh>(null);
+  const inner = useRef<THREE.Mesh>(null);
+  const r1    = useRef<THREE.Mesh>(null);
+  const r2    = useRef<THREE.Mesh>(null);
+  const glow  = useRef<THREE.Mesh>(null);
   useFrame(({ clock }) => {
-    if (group.current) {
-      group.current.rotation.y = clock.elapsedTime * 0.18;
-      group.current.rotation.x = Math.sin(clock.elapsedTime * 0.1) * 0.12;
-    }
-  });
-  const points = Array.from({ length: 28 }, (_, i) => {
-    const t = (i / 27) * Math.PI * 4;
-    const r = 1.0;
-    return {
-      a: new THREE.Vector3(Math.cos(t) * r, (i / 27) * 5 - 2.5, Math.sin(t) * r),
-      b: new THREE.Vector3(Math.cos(t + Math.PI) * r, (i / 27) * 5 - 2.5, Math.sin(t + Math.PI) * r),
-      colorA: i % 2 === 0 ? '#00d4ff' : '#a855f7',
-      colorB: i % 2 === 0 ? '#e879f9' : '#00ff88',
-    };
+    const t = clock.elapsedTime;
+    if (outer.current) { outer.current.rotation.y = t * 0.25; outer.current.rotation.x = t * 0.12; }
+    if (inner.current) { inner.current.rotation.y = -t * 0.4; inner.current.rotation.z = t * 0.18; }
+    if (r1.current)    { r1.current.rotation.z = t * 0.5; }
+    if (r2.current)    { r2.current.rotation.x = t * 0.38; r2.current.rotation.z = -t * 0.2; }
+    if (glow.current)  { glow.current.scale.setScalar(1 + Math.sin(t * 1.4) * 0.06); }
   });
   return (
-    <group ref={group}>
-      {points.map((p, i) => (
-        <group key={i}>
-          <mesh position={p.a.toArray()}>
-            <sphereGeometry args={[0.055, 8, 8]} />
-            <meshStandardMaterial color={p.colorA} emissive={p.colorA} emissiveIntensity={1.2} />
-          </mesh>
-          <mesh position={p.b.toArray()}>
-            <sphereGeometry args={[0.055, 8, 8]} />
-            <meshStandardMaterial color={p.colorB} emissive={p.colorB} emissiveIntensity={1.2} />
-          </mesh>
-          {i % 3 === 0 && (
-            <mesh position={[0, (i / 27) * 5 - 2.5, 0]}>
-              <cylinderGeometry args={[0.015, 0.015, p.a.distanceTo(p.b), 6]} />
-              <meshBasicMaterial color="#ffffff" transparent opacity={0.15} />
-            </mesh>
-          )}
-        </group>
-      ))}
+    <group>
+      <mesh ref={outer}>
+        <icosahedronGeometry args={[1.5, 1]} />
+        <meshBasicMaterial color="#D4AF37" wireframe transparent opacity={0.28} />
+      </mesh>
+      <mesh ref={inner}>
+        <icosahedronGeometry args={[0.8, 0]} />
+        <meshStandardMaterial color="#1a0f00" emissive="#D4AF37" emissiveIntensity={1.1} roughness={0.05} metalness={0.98} />
+      </mesh>
+      <mesh ref={r1} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[2.1, 0.016, 16, 120]} />
+        <meshStandardMaterial color="#D4AF37" emissive="#D4AF37" emissiveIntensity={0.6} metalness={0.9} roughness={0.1} transparent opacity={0.7} />
+      </mesh>
+      <mesh ref={r2} rotation={[Math.PI / 3, 0, 0]}>
+        <torusGeometry args={[2.7, 0.01, 16, 120]} />
+        <meshBasicMaterial color="#F5D67B" transparent opacity={0.3} />
+      </mesh>
+      <mesh ref={glow}>
+        <sphereGeometry args={[2.0, 16, 16]} />
+        <meshBasicMaterial color="#D4AF37" transparent opacity={0.04} />
+      </mesh>
+      <pointLight position={[0, 0, 0]} intensity={2.5} color="#D4AF37" distance={10} />
     </group>
   );
 }
 
+function useCounter(target: number, inView: boolean, duration = 1800) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); }
+      else setCount(Math.floor(start));
+    }, 16);
+    return () => clearInterval(timer);
+  }, [inView, target, duration]);
+  return count;
+}
+
 const timeline = [
-  { title:'Associate Software Engineer', org:'Allied Consultants', location:'Lahore, Pakistan', period:'Apr 2023 — Jan 2024', description:'Built and maintained full-stack web applications for B2B clients using React, Node.js, and MongoDB in an Agile team. Participated in code reviews, testing, and feature delivery end-to-end.', tags:['React','Node.js','MongoDB','Agile'], Icon:Briefcase, color:'#00d4ff', borderColor:'rgba(0,212,255,0.3)' },
-  { title:'M.Sc. Computer Science', org:'University of Siegen', location:'Siegen, Germany', period:'Apr 2024 — Jul 2026 (Expected)', description:"Master's degree in Computer Science focusing on advanced software engineering, distributed systems, and AI/ML applications.", tags:['Computer Science','AI/ML','Distributed Systems'], Icon:GraduationCap, color:'#a855f7', borderColor:'rgba(168,85,247,0.3)' },
-  { title:'B.Sc. Software Engineering', org:'University of Gujrat', location:'Gujrat, Pakistan', period:'Sep 2018 — Nov 2022', description:"Bachelor's degree in Software Engineering covering design patterns, databases, algorithms, and full-stack development fundamentals.", tags:['Software Engineering','Databases','Algorithms'], Icon:GraduationCap, color:'#e879f9', borderColor:'rgba(232,121,249,0.3)' },
+  {
+    year: '2024',
+    title: 'M.Sc. Computer Science',
+    org: 'University of Siegen',
+    location: 'Siegen, Germany',
+    period: 'Apr 2024 — Jul 2026 (Expected)',
+    description: "Master's degree focusing on advanced software engineering, distributed systems, and AI/ML applications.",
+    tags: ['Computer Science', 'AI/ML', 'Distributed Systems'],
+    Icon: GraduationCap,
+    color: '#D4AF37',
+    borderColor: 'rgba(212,175,55,0.3)',
+  },
+  {
+    year: '2023',
+    title: 'Associate Software Engineer',
+    org: 'Allied Consultants',
+    location: 'Lahore, Pakistan',
+    period: 'Apr 2023 — Jan 2024',
+    description: 'Built full-stack B2B web applications using React, Node.js, and MongoDB. Code reviews, testing, and feature delivery end-to-end in an Agile team.',
+    tags: ['React', 'Node.js', 'MongoDB', 'Agile'],
+    Icon: Briefcase,
+    color: '#F5D67B',
+    borderColor: 'rgba(245,214,123,0.3)',
+  },
+  {
+    year: '2018',
+    title: 'B.Sc. Software Engineering',
+    org: 'University of Gujrat',
+    location: 'Gujrat, Pakistan',
+    period: 'Sep 2018 — Nov 2022',
+    description: "Bachelor's in Software Engineering covering design patterns, databases, algorithms, and full-stack development fundamentals.",
+    tags: ['Software Engineering', 'Databases', 'Algorithms'],
+    Icon: GraduationCap,
+    color: '#B8960C',
+    borderColor: 'rgba(184,150,12,0.3)',
+  },
 ];
+
 const certifications = [
-  { title:'Full-Stack Web Development (React & Node.js)', issuer:'Udemy' },
-  { title:'TypeScript & Backend Development (NestJS)', issuer:'Coursera' },
+  { title: 'Full-Stack Web Development (React & Node.js)', issuer: 'Udemy' },
+  { title: 'TypeScript & Backend Development (NestJS)', issuer: 'Coursera' },
 ];
+
 const languages = [
-  { lang:'English', level:'C1 — Fluent', pct:85 },
-  { lang:'German', level:'A2 — Improving', pct:25 },
+  { lang: 'English', level: 'C1 — Fluent', pct: 85 },
+  { lang: 'German', level: 'A2 — Improving', pct: 25 },
 ];
-const quickFacts = [
-  { icon:'📍', text:'Siegen, Germany' },
-  { icon:'🎓', text:'Expected Jul 2026' },
-  { icon:'💼', text:'1+ year industry experience' },
-  { icon:'🌐', text:'umer-rauf-portfolio.netlify.app' },
+
+const achievements = [
+  { value: 3, suffix: '+', label: 'Years Experience' },
+  { value: 20, suffix: '+', label: 'Projects Built' },
+  { value: 10, suffix: '+', label: 'Technologies' },
 ];
 
 export default function About() {
-  const ref = useRef(null);
+  const ref    = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
+  const c0 = useCounter(achievements[0].value, inView);
+  const c1 = useCounter(achievements[1].value, inView);
+  const c2 = useCounter(achievements[2].value, inView);
+  const counts = [c0, c1, c2];
+
   return (
-    <section id="about" className="section" style={{ position:'relative', overflow:'hidden' }}>
-      {/* 3D helix background */}
-      <div className="absolute right-0 top-0 bottom-0 w-72 opacity-20 pointer-events-none" style={{ zIndex:0 }}>
-        <Canvas camera={{ position:[0,0,6], fov:50 }}>
-          <ambientLight intensity={0.4} />
-          <pointLight position={[2,3,3]} intensity={3} color="#00d4ff" />
-          <pointLight position={[-2,-2,2]} intensity={2} color="#a855f7" />
-          <HelixBg />
-        </Canvas>
-      </div>
+    <section id="about" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
 
-      <div className="section-inner" ref={ref} style={{ position:'relative', zIndex:1 }}>
+      {/* Subtle gold radial bg */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse 60% 60% at 80% 50%, rgba(212,175,55,0.04), transparent)' }} />
 
-        {/* Header — tilts forward from above */}
-        <Reveal3D direction="up" delay={0} className="mb-10">
+      <div className="section-inner" ref={ref} style={{ position: 'relative', zIndex: 1 }}>
+
+        {/* Header */}
+        <Reveal3D direction="up" delay={0} className="mb-12">
           <p className="section-label">Background</p>
-          <h2 className="section-title">Experience &amp; <span className="gradient-text">Education</span></h2>
-          <p className="text-base max-w-xl" style={{ color:'rgba(200,225,245,0.65)' }}>
+          <h2 className="section-title">
+            Experience &amp; <span className="gradient-text">Education</span>
+          </h2>
+          <p className="text-base max-w-xl" style={{ color: 'rgba(245,245,245,0.6)' }}>
             A journey from Pakistan to Germany — driven by curiosity, engineering discipline, and a passion for building exceptional software.
           </p>
         </Reveal3D>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+        {/* Achievement counters */}
+        <Reveal3D direction="up" delay={0.1} className="mb-12">
+          <div className="grid grid-cols-3 gap-4">
+            {achievements.map(({ suffix, label }, i) => (
+              <div key={label} className="counter-card">
+                <p className="font-display font-black text-4xl gradient-text">
+                  {counts[i]}{suffix}
+                </p>
+                <p className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{label}</p>
+              </div>
+            ))}
+          </div>
+        </Reveal3D>
 
-          {/* LEFT — Timeline: each card flips in from left */}
-          <Reveal3D direction="left" delay={0.1} className="lg:col-span-2">
-            <div className="glass rounded-2xl p-6 flex flex-col holo-border h-full">
-              <h3 className="font-display font-bold text-base mb-5 flex items-center gap-2" style={{ color:'rgba(240,246,255,0.85)' }}>
-                <span className="w-1.5 h-4 rounded-full" style={{ background:'linear-gradient(#00d4ff,#a855f7)' }} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+
+          {/* LEFT — Timeline */}
+          <Reveal3D direction="left" delay={0.15} className="lg:col-span-2">
+            <div className="glass rounded-2xl p-7 gold-border">
+              <h3 className="font-display font-bold text-base mb-7 flex items-center gap-2" style={{ color: '#F5D67B' }}>
+                <span className="w-1.5 h-5 rounded-full" style={{ background: 'var(--gold-gradient)' }} />
                 Timeline
               </h3>
-              <div className="relative flex-1">
-                <div className="absolute top-0 bottom-0 w-px" style={{ left:19, background:'linear-gradient(to bottom,rgba(0,212,255,0.4),rgba(168,85,247,0.3),rgba(232,121,249,0.1))' }} />
-                <div className="space-y-5">
+              <div className="relative">
+                {/* Animated gold progress line */}
+                <div className="timeline-line" style={{ height: '100%', left: 24 }}>
+                  <motion.div
+                    className="timeline-line-fill"
+                    initial={{ height: 0 }}
+                    animate={inView ? { height: '100%' } : {}}
+                    transition={{ duration: 1.6, delay: 0.4, ease: 'easeOut' }}
+                  />
+                </div>
+
+                <div className="space-y-8">
                   {timeline.map((item, i) => {
                     const Icon = item.Icon;
                     return (
-                      <Reveal3D key={i} direction="flipX" delay={0.15 + i * 0.15}>
-                        <div className="relative flex gap-4">
-                          <div className="relative z-10 flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center"
-                            style={{ background:`${item.color}18`, border:`1px solid ${item.borderColor}`, color:item.color }}>
-                            <Icon size={16} />
+                      <Reveal3D key={i} direction="flipX" delay={0.2 + i * 0.15}>
+                        <div className="relative flex gap-5 pl-2">
+                          {/* Year + dot */}
+                          <div className="flex flex-col items-center gap-1 flex-shrink-0">
+                            <span className="font-mono text-xs font-bold" style={{ color: item.color }}>
+                              {item.year}
+                            </span>
+                            <div className="timeline-dot" style={{ background: item.color, boxShadow: `0 0 14px ${item.color}60` }} />
                           </div>
-                          <motion.div className="flex-1 rounded-xl p-4 shine-effect"
-                            style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)' }}
-                            whileHover={{ x:4, rotateY:2, scale:1.01 }}
-                            transition={{ duration:0.25 }}>
-                            <div className="flex flex-wrap items-start justify-between gap-1 mb-2">
+
+                          {/* Card */}
+                          <motion.div
+                            className="flex-1 rounded-xl p-5 shine-effect"
+                            style={{
+                              background: 'rgba(255,255,255,0.03)',
+                              border: `1px solid ${item.borderColor}`,
+                            }}
+                            whileHover={{ x: 5, scale: 1.01 }}
+                            transition={{ duration: 0.25 }}
+                          >
+                            <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                               <div>
-                                <h4 className="font-display font-bold text-sm leading-tight" style={{ color:'rgba(240,246,255,0.95)' }}>{item.title}</h4>
-                                <p className="text-xs font-semibold mt-0.5" style={{ color:item.color }}>{item.org}</p>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className="w-7 h-7 rounded-lg flex items-center justify-center"
+                                    style={{ background: `${item.color}18`, color: item.color }}>
+                                    <Icon size={14} />
+                                  </div>
+                                  <h4 className="font-display font-bold text-sm leading-tight" style={{ color: '#F5F5F5' }}>
+                                    {item.title}
+                                  </h4>
+                                </div>
+                                <p className="text-xs font-semibold" style={{ color: item.color }}>{item.org}</p>
                               </div>
                               <div className="text-right flex-shrink-0">
-                                <span className="flex items-center gap-1 text-xs justify-end" style={{ color:'rgba(200,225,245,0.5)' }}><Calendar size={10} /> {item.period}</span>
-                                <span className="flex items-center gap-1 text-xs justify-end mt-0.5" style={{ color:'rgba(200,225,245,0.4)' }}><MapPin size={10} /> {item.location}</span>
+                                <span className="flex items-center gap-1 text-xs justify-end" style={{ color: 'rgba(245,245,245,0.4)' }}>
+                                  <Calendar size={10} /> {item.period}
+                                </span>
+                                <span className="flex items-center gap-1 text-xs justify-end mt-0.5" style={{ color: 'rgba(245,245,245,0.35)' }}>
+                                  <MapPin size={10} /> {item.location}
+                                </span>
                               </div>
                             </div>
-                            <p className="text-sm leading-relaxed mb-3" style={{ color:'rgba(200,225,245,0.7)' }}>{item.description}</p>
+                            <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(245,245,245,0.65)' }}>
+                              {item.description}
+                            </p>
                             <div className="flex flex-wrap gap-1.5">
                               {item.tags.map(tag => (
-                                <span key={tag} className="text-xs px-2 py-0.5 rounded" style={{ background:`${item.color}15`, color:item.color, border:`1px solid ${item.color}30` }}>{tag}</span>
+                                <span key={tag} className="text-xs px-2 py-0.5 rounded"
+                                  style={{ background: `${item.color}15`, color: item.color, border: `1px solid ${item.color}30` }}>
+                                  {tag}
+                                </span>
                               ))}
                             </div>
                           </motion.div>
@@ -145,46 +248,42 @@ export default function About() {
             </div>
           </Reveal3D>
 
-          {/* RIGHT sidebar: each panel flips in from right */}
-          <div className="lg:col-span-1 flex flex-col gap-4">
+          {/* RIGHT sidebar */}
+          <div className="lg:col-span-1 flex flex-col gap-5">
 
-            <Reveal3D direction="right" delay={0.2} style={{ flex:1, display:'flex', flexDirection:'column' }}>
-              <div className="glass rounded-2xl p-5 flex-1 holo-border">
-                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color:'rgba(240,246,255,0.85)' }}>
-                  <Award size={14} style={{ color:'#a855f7' }} /> Certifications
-                </h3>
-                <div className="space-y-3">
-                  {certifications.map((cert, i) => (
-                    <Reveal3D key={i} direction="zoomIn" delay={0.3 + i * 0.1}>
-                      <div className="flex gap-3 p-3 rounded-xl" style={{ background:'rgba(168,85,247,0.06)', border:'1px solid rgba(168,85,247,0.14)' }}>
-                        <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black" style={{ background:'rgba(168,85,247,0.2)', color:'#a855f7' }}>{i+1}</div>
-                        <div>
-                          <p className="text-sm font-medium leading-snug" style={{ color:'rgba(240,246,255,0.85)' }}>{cert.title}</p>
-                          <p className="text-xs mt-1" style={{ color:'rgba(200,225,245,0.5)' }}>{cert.issuer}</p>
-                        </div>
-                      </div>
-                    </Reveal3D>
-                  ))}
-                </div>
+            {/* Gold 3D Crystal */}
+            <Reveal3D direction="right" delay={0.2}>
+              <div
+                className="rounded-2xl overflow-hidden gold-border"
+                style={{ height: 220, background: 'rgba(11,11,13,0.95)', position: 'relative' }}
+              >
+                <Canvas camera={{ position: [0, 0, 7], fov: 48 }} gl={{ antialias: true, alpha: false }}>
+                  <color attach="background" args={['#0B0B0D']} />
+                  <ambientLight intensity={0.1} />
+                  <pointLight position={[4, 4, 4]}   intensity={6} color="#D4AF37" />
+                  <pointLight position={[-3, -2, 2]} intensity={3} color="#F5D67B" />
+                  <Suspense fallback={null}>
+                    <GoldCrystal />
+                  </Suspense>
+                </Canvas>
               </div>
             </Reveal3D>
 
-            <Reveal3D direction="right" delay={0.32} style={{ flex:1, display:'flex', flexDirection:'column' }}>
-              <div className="glass rounded-2xl p-5 flex-1 holo-border">
-                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color:'rgba(240,246,255,0.85)' }}>
-                  <Globe size={14} style={{ color:'#00d4ff' }} /> Languages
+            {/* Certifications */}
+            <Reveal3D direction="right" delay={0.3}>
+              <div className="glass rounded-2xl p-5 gold-border">
+                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#F5D67B' }}>
+                  <Award size={14} style={{ color: '#D4AF37' }} /> Certifications
                 </h3>
-                <div className="space-y-4">
-                  {languages.map(({ lang, level, pct }, i) => (
-                    <div key={lang}>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm font-semibold" style={{ color:'rgba(240,246,255,0.9)' }}>{lang}</span>
-                        <span className="text-xs" style={{ color:'rgba(200,225,245,0.6)' }}>{level}</span>
-                      </div>
-                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background:'rgba(255,255,255,0.07)' }}>
-                        <motion.div className="h-full rounded-full" style={{ background:'linear-gradient(90deg,#00d4ff,#a855f7)' }}
-                          initial={{ width:0 }} animate={inView ? { width:`${pct}%` } : {}}
-                          transition={{ duration:1.2, delay:0.6 + i * 0.15, ease:'easeOut' as const }} />
+                <div className="space-y-3">
+                  {certifications.map((cert, i) => (
+                    <div key={i} className="flex gap-3 p-3 rounded-xl"
+                      style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.14)' }}>
+                      <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black"
+                        style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>{i + 1}</div>
+                      <div>
+                        <p className="text-sm font-medium leading-snug" style={{ color: '#F5F5F5' }}>{cert.title}</p>
+                        <p className="text-xs mt-1" style={{ color: 'rgba(245,245,245,0.45)' }}>{cert.issuer}</p>
                       </div>
                     </div>
                   ))}
@@ -192,20 +291,29 @@ export default function About() {
               </div>
             </Reveal3D>
 
-            <Reveal3D direction="right" delay={0.44} style={{ flex:1, display:'flex', flexDirection:'column' }}>
-              <div className="glass rounded-2xl p-5 flex-1 holo-border">
-                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color:'rgba(240,246,255,0.85)' }}>
-                  <span className="w-1.5 h-4 rounded-full" style={{ background:'linear-gradient(#00d4ff,#e879f9)' }} /> Quick Facts
+            {/* Languages */}
+            <Reveal3D direction="right" delay={0.4}>
+              <div className="glass rounded-2xl p-5 gold-border">
+                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#F5D67B' }}>
+                  <Globe size={14} style={{ color: '#D4AF37' }} /> Languages
                 </h3>
-                <div className="space-y-2">
-                  {quickFacts.map(({ icon, text }, i) => (
-                    <Reveal3D key={text} direction="zoomIn" delay={0.5 + i * 0.08}>
-                      <div className="flex items-center gap-2.5 p-2.5 rounded-lg text-sm"
-                        style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.06)', color:'rgba(200,225,245,0.75)' }}>
-                        <span className="flex-shrink-0">{icon}</span>
-                        <span>{text}</span>
+                <div className="space-y-4">
+                  {languages.map(({ lang, level, pct }, i) => (
+                    <div key={lang}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm font-semibold" style={{ color: '#F5F5F5' }}>{lang}</span>
+                        <span className="text-xs" style={{ color: 'rgba(245,245,245,0.5)' }}>{level}</span>
                       </div>
-                    </Reveal3D>
+                      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+                        <motion.div
+                          className="h-full rounded-full"
+                          style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)' }}
+                          initial={{ width: 0 }}
+                          animate={inView ? { width: `${pct}%` } : {}}
+                          transition={{ duration: 1.2, delay: 0.7 + i * 0.15, ease: 'easeOut' as const }}
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
