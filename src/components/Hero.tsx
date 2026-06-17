@@ -1,5 +1,5 @@
-import { useRef, useMemo, Suspense, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, useMemo, Suspense, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { ArrowDown, Phone, Mail, MapPin } from 'lucide-react';
 import * as THREE from 'three';
@@ -362,7 +362,7 @@ export default function Hero() {
         style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.07), transparent 70%)', filter: 'blur(60px)', zIndex: 2 }} />
 
       {/* Content */}
-      <motion.div style={{ y, opacity }} className="relative text-center flex flex-col items-center pt-20 pb-8 px-5" style={{ zIndex: 10 } as any}>
+      <motion.div style={{ y, opacity, zIndex: 10 }} className="relative text-center flex flex-col items-center pt-20 pb-8 px-5">
         <motion.div
           initial="hidden"
           animate="visible"
