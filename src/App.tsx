@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, lazy, Suspense, useCallback } from 'react';
 import './index.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -7,6 +7,11 @@ import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import { useSectionObserver } from './hooks/useSectionObserver';
+import { useGalaxyStore } from './store/useGalaxyStore';
+
+/* Lazy-load the Galaxy background so HTML paints first */
+const GalaxyBackground = lazy(() => import('./components/GalaxyBackground'));
 
 /* ── Custom Gold Cursor ─────────────────────────────────────────── */
 function GoldCursor() {
@@ -80,52 +85,56 @@ function Spotlight() {
 }
 
 function App() {
+  const appLoaded = useGalaxyStore(s => s.appLoaded);
+
+  /* Attach the IntersectionObserver that syncs scroll → Zustand store */
+  useSectionObserver();
+
   return (
-    <div className="relative min-h-screen antialiased overflow-x-hidden" style={{ background: '#0B0B0D' }}>
+    <>
+      {/* ── LAYER 1: Fixed galaxy background — never scrolls ── */}
+      <div
+        style={{
+          position: 'fixed',
+          top: 0, left: 0,
+          width: '100vw', height: '100vh',
+          zIndex: -1,
+          pointerEvents: 'none',
+        }}
+      >
+        <Suspense fallback={<div style={{ width: '100%', height: '100%', background: '#05050f' }} />}>
+          <GalaxyBackground />
+        </Suspense>
+      </div>
+
+      {/* ── Overlay helpers (cursor, spotlight — fixed, above bg, below content) ── */}
       <GoldCursor />
       <Spotlight />
 
-      {/* Ambient gold orbs (fixed) */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div
-          className="absolute top-0 left-1/4 w-[700px] h-[700px] rounded-full"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.06), transparent 70%)',
-            filter: 'blur(120px)',
-            animation: 'orbFloat 14s ease-in-out infinite',
-          }}
-        />
-        <div
-          className="absolute bottom-1/3 right-1/4 w-[500px] h-[500px] rounded-full"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.04), transparent 70%)',
-            filter: 'blur(100px)',
-            animation: 'orbFloat 11s ease-in-out infinite 4s',
-          }}
-        />
-        <div
-          className="absolute top-2/3 left-1/2 w-[400px] h-[400px] rounded-full"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(245,214,123,0.03), transparent 70%)',
-            filter: 'blur(90px)',
-            animation: 'orbFloat 16s ease-in-out infinite 8s',
-          }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10">
-        <Navbar />
+      {/* ── LAYER 2: Scrollable content — transparent so galaxy shows through ── */}
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          // Transparent — galaxy visible underneath
+          background: 'transparent',
+        }}
+      >
+        {appLoaded && <Navbar />}
         <main>
           <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Contact />
+          {appLoaded && (
+            <>
+              <About />
+              <Skills />
+              <Projects />
+              <Contact />
+            </>
+          )}
         </main>
-        <Footer />
+        {appLoaded && <Footer />}
       </div>
-    </div>
+    </>
   );
 }
 

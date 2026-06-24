@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Mail } from 'lucide-react';
+import { useGalaxyStore, type SectionId } from '../store/useGalaxyStore';
 
 function GitHubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -27,22 +28,15 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const [scrolled,      setScrolled]      = useState(false);
-  const [mobileOpen,    setMobileOpen]    = useState(false);
-  const [activeSection, setActiveSection] = useState('hero');
+  const [scrolled,   setScrolled]   = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Read active section from galaxy store (synced by IntersectionObserver + camera)
+  const activeSection = useGalaxyStore((s) => s.currentSection);
+  const setSection    = useGalaxyStore((s) => s.setSection);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
-      const sections = navLinks.map(l => l.href.replace('#', ''));
-      for (const s of [...sections].reverse()) {
-        const el = document.getElementById(s);
-        if (el && window.scrollY >= el.offsetTop - 120) {
-          setActiveSection(s);
-          break;
-        }
-      }
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -55,6 +49,11 @@ export default function Navbar() {
 
   const closeMenu = () => setMobileOpen(false);
 
+  /** Navigate to a section — set the store (triggers galaxy camera) + scroll */
+  const handleNavClick = (sectionId: string) => {
+    setSection(sectionId as SectionId);
+  };
+
   return (
     <>
       <motion.header
@@ -63,7 +62,7 @@ export default function Navbar() {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
         style={{
-          background: scrolled ? 'rgba(11,11,13,0.82)' : 'transparent',
+          background: scrolled ? 'rgba(5,5,15,0.82)' : 'transparent',
           backdropFilter: scrolled ? 'blur(24px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
           borderBottom: scrolled ? '1px solid rgba(212,175,55,0.12)' : '1px solid transparent',
@@ -74,6 +73,7 @@ export default function Navbar() {
           {/* Logo */}
           <motion.a
             href="#hero"
+            onClick={() => handleNavClick('hero')}
             className="font-display font-black text-xl tracking-tight gradient-text relative z-10"
             whileHover={{ scale: 1.05 }}
           >
@@ -88,6 +88,7 @@ export default function Navbar() {
               return (
                 <a
                   key={href} href={href}
+                  onClick={() => handleNavClick(id)}
                   className="relative px-4 py-2 text-sm font-medium transition-all duration-200 group"
                   style={{ color: isActive ? '#F5D67B' : 'rgba(245,245,245,0.5)' }}
                 >
@@ -178,7 +179,7 @@ export default function Navbar() {
               style={{
                 width: 'min(85vw, 340px)',
                 height: '100dvh',
-                background: 'rgba(11,11,13,0.97)',
+                background: 'rgba(5,5,15,0.97)',
                 backdropFilter: 'blur(40px)',
                 WebkitBackdropFilter: 'blur(40px)',
                 borderLeft: '1px solid rgba(212,175,55,0.18)',
@@ -214,7 +215,7 @@ export default function Navbar() {
                   return (
                     <motion.a
                       key={href} href={href}
-                      onClick={closeMenu}
+                      onClick={() => { handleNavClick(id); closeMenu(); }}
                       initial={{ opacity: 0, x: 40 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 + i * 0.07, type: 'spring', stiffness: 300, damping: 30 }}

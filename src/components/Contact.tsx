@@ -1,52 +1,6 @@
-import { useRef, useState, Suspense } from 'react';
+import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, ExternalLink, Send, CheckCircle2 } from 'lucide-react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
-
-/* ─── Gold Ring System ─── */
-function GoldRings() {
-  const r1   = useRef<THREE.Mesh>(null);
-  const r2   = useRef<THREE.Mesh>(null);
-  const r3   = useRef<THREE.Mesh>(null);
-  const core = useRef<THREE.Mesh>(null);
-  const glow = useRef<THREE.Mesh>(null);
-
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    if (r1.current)   { r1.current.rotation.z = t * 0.45; }
-    if (r2.current)   { r2.current.rotation.x = t * 0.32; r2.current.rotation.z = -t * 0.18; }
-    if (r3.current)   { r3.current.rotation.y = t * 0.28; r3.current.rotation.x = t * 0.12; }
-    if (core.current) { core.current.rotation.y = t * 0.22; core.current.scale.setScalar(1 + Math.sin(t * 1.6) * 0.06); }
-    if (glow.current) { glow.current.scale.setScalar(1 + Math.sin(t * 0.9) * 0.08); }
-  });
-
-  return (
-    <group>
-      <mesh ref={core}>
-        <sphereGeometry args={[0.6, 24, 24]} />
-        <meshStandardMaterial color="#1a0f00" emissive="#D4AF37" emissiveIntensity={1.4} roughness={0.05} metalness={0.98} />
-      </mesh>
-      <mesh ref={glow}>
-        <sphereGeometry args={[1.0, 16, 16]} />
-        <meshBasicMaterial color="#D4AF37" transparent opacity={0.05} />
-      </mesh>
-      <mesh ref={r1} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.6, 0.02, 16, 120]} />
-        <meshStandardMaterial color="#D4AF37" emissive="#D4AF37" emissiveIntensity={0.7} metalness={0.9} roughness={0.1} transparent opacity={0.85} />
-      </mesh>
-      <mesh ref={r2} rotation={[Math.PI / 3, 0, 0]}>
-        <torusGeometry args={[2.3, 0.014, 16, 120]} />
-        <meshStandardMaterial color="#F5D67B" emissive="#F5D67B" emissiveIntensity={0.4} metalness={0.9} roughness={0.1} transparent opacity={0.6} />
-      </mesh>
-      <mesh ref={r3} rotation={[0, Math.PI / 4, 0]}>
-        <torusGeometry args={[3.0, 0.009, 16, 120]} />
-        <meshBasicMaterial color="#B8960C" transparent opacity={0.35} />
-      </mesh>
-      <pointLight position={[0, 0, 0]} intensity={3} color="#D4AF37" distance={12} />
-    </group>
-  );
-}
 
 function GitHubIcon({ size = 18 }: { size?: number }) {
   return (
@@ -88,16 +42,32 @@ export default function Contact() {
   return (
     <section id="contact" className="section" style={{ position: 'relative', overflow: 'hidden' }}>
 
-      {/* Real 3D background — gold rings */}
+      {/* CSS gold ring decoration (replaces Canvas GoldRings) */}
       <div className="absolute right-0 top-0 bottom-0 w-96 pointer-events-none overflow-hidden" style={{ zIndex: 0, opacity: 0.35 }}>
-        <Canvas camera={{ position: [0, 0, 8], fov: 48 }} gl={{ antialias: true, alpha: false }}>
-          <color attach="background" args={['#0B0B0D']} />
-          <ambientLight intensity={0.1} />
-          <pointLight position={[3, 3, 3]} intensity={4} color="#D4AF37" />
-          <Suspense fallback={null}>
-            <GoldRings />
-          </Suspense>
-        </Canvas>
+        <div className="absolute inset-0 flex items-center justify-center">
+          {/* Core orb */}
+          <div className="nebula-orb" style={{ width: 60, height: 60 }} />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="css-orbit-ring" style={{ width: 160, height: 160, animationDuration: '7s' }} />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="css-orbit-ring" style={{ width: 230, height: 230, animationDuration: '11s', animationDirection: 'reverse', borderColor: 'rgba(245,214,123,0.15)' }} />
+        </div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="css-orbit-ring" style={{ width: 300, height: 300, animationDuration: '16s', borderColor: 'rgba(184,150,12,0.1)' }} />
+        </div>
+        {/* Ambient glow */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div style={{
+            width: 200,
+            height: 200,
+            borderRadius: '50%',
+            background: 'radial-gradient(ellipse, rgba(212,175,55,0.12), transparent 70%)',
+            filter: 'blur(30px)',
+            animation: 'nebulaPulse 4s ease-in-out infinite',
+          }} />
+        </div>
       </div>
 
       <div className="section-inner" ref={ref} style={{ position: 'relative', zIndex: 1 }}>

@@ -1,51 +1,7 @@
-import { useRef, useState, useEffect, Suspense } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Briefcase, GraduationCap, MapPin, Calendar, Award, Globe } from 'lucide-react';
-import { Canvas, useFrame } from '@react-three/fiber';
 import { Reveal3D } from './Reveal3D';
-import * as THREE from 'three';
-
-/* ── Gold Crystal for About sidebar ─── */
-function GoldCrystal() {
-  const outer = useRef<THREE.Mesh>(null);
-  const inner = useRef<THREE.Mesh>(null);
-  const r1    = useRef<THREE.Mesh>(null);
-  const r2    = useRef<THREE.Mesh>(null);
-  const glow  = useRef<THREE.Mesh>(null);
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
-    if (outer.current) { outer.current.rotation.y = t * 0.25; outer.current.rotation.x = t * 0.12; }
-    if (inner.current) { inner.current.rotation.y = -t * 0.4; inner.current.rotation.z = t * 0.18; }
-    if (r1.current)    { r1.current.rotation.z = t * 0.5; }
-    if (r2.current)    { r2.current.rotation.x = t * 0.38; r2.current.rotation.z = -t * 0.2; }
-    if (glow.current)  { glow.current.scale.setScalar(1 + Math.sin(t * 1.4) * 0.06); }
-  });
-  return (
-    <group>
-      <mesh ref={outer}>
-        <icosahedronGeometry args={[1.5, 1]} />
-        <meshBasicMaterial color="#D4AF37" wireframe transparent opacity={0.28} />
-      </mesh>
-      <mesh ref={inner}>
-        <icosahedronGeometry args={[0.8, 0]} />
-        <meshStandardMaterial color="#1a0f00" emissive="#D4AF37" emissiveIntensity={1.1} roughness={0.05} metalness={0.98} />
-      </mesh>
-      <mesh ref={r1} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[2.1, 0.016, 16, 120]} />
-        <meshStandardMaterial color="#D4AF37" emissive="#D4AF37" emissiveIntensity={0.6} metalness={0.9} roughness={0.1} transparent opacity={0.7} />
-      </mesh>
-      <mesh ref={r2} rotation={[Math.PI / 3, 0, 0]}>
-        <torusGeometry args={[2.7, 0.01, 16, 120]} />
-        <meshBasicMaterial color="#F5D67B" transparent opacity={0.3} />
-      </mesh>
-      <mesh ref={glow}>
-        <sphereGeometry args={[2.0, 16, 16]} />
-        <meshBasicMaterial color="#D4AF37" transparent opacity={0.04} />
-      </mesh>
-      <pointLight position={[0, 0, 0]} intensity={2.5} color="#D4AF37" distance={10} />
-    </group>
-  );
-}
 
 function useCounter(target: number, inView: boolean, duration = 1800) {
   const [count, setCount] = useState(0);
@@ -251,21 +207,35 @@ export default function About() {
           {/* RIGHT sidebar */}
           <div className="lg:col-span-1 flex flex-col gap-5">
 
-            {/* Gold 3D Crystal */}
+            {/* CSS Decorative Crystal (replaces Canvas) */}
             <Reveal3D direction="right" delay={0.2}>
               <div
-                className="rounded-2xl overflow-hidden gold-border"
-                style={{ height: 220, background: 'rgba(11,11,13,0.95)', position: 'relative' }}
+                className="rounded-2xl overflow-hidden gold-border relative"
+                style={{ height: 220, background: 'rgba(5,5,15,0.55)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
               >
-                <Canvas camera={{ position: [0, 0, 7], fov: 48 }} gl={{ antialias: true, alpha: false }}>
-                  <color attach="background" args={['#0B0B0D']} />
-                  <ambientLight intensity={0.1} />
-                  <pointLight position={[4, 4, 4]}   intensity={6} color="#D4AF37" />
-                  <pointLight position={[-3, -2, 2]} intensity={3} color="#F5D67B" />
-                  <Suspense fallback={null}>
-                    <GoldCrystal />
-                  </Suspense>
-                </Canvas>
+                {/* Animated gold orb */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="nebula-orb" style={{ width: 100, height: 100 }} />
+                </div>
+                {/* Orbiting ring 1 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="css-orbit-ring" style={{ width: 160, height: 160, animationDuration: '8s' }} />
+                </div>
+                {/* Orbiting ring 2 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="css-orbit-ring" style={{ width: 200, height: 200, animationDuration: '12s', animationDirection: 'reverse', borderColor: 'rgba(245,214,123,0.2)' }} />
+                </div>
+                {/* Inner glow */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div style={{
+                    width: 140,
+                    height: 140,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(ellipse, rgba(212,175,55,0.15), transparent 70%)',
+                    filter: 'blur(20px)',
+                    animation: 'nebulaPulse 3s ease-in-out infinite',
+                  }} />
+                </div>
               </div>
             </Reveal3D>
 
