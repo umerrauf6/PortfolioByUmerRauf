@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { motion, useScroll, useTransform, useAnimation } from 'framer-motion';
+import { motion, useScroll, useTransform, useAnimation, type Variants } from 'framer-motion';
 import { ArrowDown, Phone, Mail, MapPin } from 'lucide-react';
 import { useGalaxyStore } from '../store/useGalaxyStore';
 
@@ -25,7 +25,7 @@ function AnimatedHeroName() {
   const name1 = "Umer".split('');
   const name2 = "Rauf".split('');
 
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 1 },
     visible: {
       opacity: 1,
@@ -37,7 +37,7 @@ function AnimatedHeroName() {
     }
   };
 
-  const letter = {
+  const letter: Variants = {
     hidden: { 
       opacity: 0, 
       y: -60, 
@@ -47,7 +47,7 @@ function AnimatedHeroName() {
     visible: {
       opacity: 1, 
       y: 0,
-      transition: { type: 'spring', damping: 12, stiffness: 100 }
+      transition: { type: 'spring' as const, damping: 12, stiffness: 100 }
     },
     filled: {
       color: '#F5D67B',
