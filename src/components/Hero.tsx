@@ -37,7 +37,7 @@ function AnimatedHeroName() {
     }
   };
 
-  const letter: Variants = {
+  const letter = {
     hidden: { 
       opacity: 0, 
       y: -60, 
@@ -54,7 +54,7 @@ function AnimatedHeroName() {
       WebkitTextStroke: '0px #D4AF37',
       transition: { duration: 0.4 }
     }
-  };
+  } as unknown as Variants;
 
   return (
     <motion.h1 
