@@ -19,13 +19,13 @@ function LinkedInIcon({ size = 16 }: { size?: number }) {
 export default function Footer() {
   const year = new Date().getFullYear();
   const links = [
-    { href: 'https://github.com/umerrauf6',                Icon: GitHubIcon,  label: 'GitHub' },
+    { href: 'https://github.com/umerrauf6', Icon: GitHubIcon, label: 'GitHub' },
     { href: 'https://linkedin.com/in/umer-rauf-953689176', Icon: LinkedInIcon, label: 'LinkedIn' },
-    { href: 'mailto:umerrauf6@gmail.com',                  Icon: Mail,        label: 'Email' },
+    { href: 'mailto:umerrauf6@gmail.com', Icon: Mail, label: 'Email' },
   ];
 
   return (
-    <footer className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+    <footer className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(212,175,55,0.12)', marginTop: 80, paddingTop: 0 }}>
 
       {/* CSS gold ring particle decoration */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -70,7 +70,7 @@ export default function Footer() {
         />
       </div>
 
-      <div className="section-inner relative z-10 py-10">
+      <div className="section-inner relative z-10 py-16">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
 
           {/* Brand */}

@@ -104,56 +104,60 @@ export default function Projects() {
   }, [rawProgress]);
 
   // Section height: enough for each card to scroll into center
-  const sectionHeight = `calc(100vh + ${SCROLL_PER_CARD * (projects.length - 1)}px)`;
+  // Use a bit extra on mobile since cards are shorter but sticky bar eats space
+  const sectionHeight = `calc(100dvh + ${SCROLL_PER_CARD * (projects.length - 1)}px)`;
 
   return (
     <section id="projects" ref={sectionRef} style={{ position: 'relative', height: sectionHeight }}>
-      {/* Sticky frame — locks to top while scrolling inside the tall section */}
+      {/* Sticky frame */}
       <div style={{
-        position: 'sticky', top: 0, height: '100vh',
+        position: 'sticky',
+        top: 0,
+        height: '100dvh',   // dvh = dynamic viewport height, accounts for mobile browser bars
         overflow: 'hidden',
-        display: 'flex', flexDirection: 'column',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}>
 
-        {/* Header */}
-        <div style={{ position: 'absolute', top: 72, left: 0, right: 0, textAlign: 'center', zIndex: 10, pointerEvents: 'none' }}>
+        {/* Header — in normal flow above cards, no absolute */}
+        <div style={{ textAlign: 'center', padding: '60px 16px 16px', flexShrink: 0, width: '100%' }}>
           <p className="section-label" style={{ justifyContent: 'center' }}>Featured Work</p>
-          <h2 className="section-title">
+          <h2 className="section-title" style={{ marginBottom: 2 }}>
             Selected <span className="gradient-text">Projects</span>
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 4 }}>
-            Scroll to navigate through projects
+          <p style={{ color: 'var(--text-muted)', fontSize: 12, marginTop: 2 }}>
+            Scroll to navigate
           </p>
         </div>
 
-        {/* Sliding row — x is driven by smoothProgress */}
-        <motion.div
-          style={{
-            x: xStart,
-            display: 'flex',
-            alignItems: 'center',
-            gap: CARD_GAP,
-            marginTop: 32,
-            width: 'max-content',
-            // no paddingLeft — centering is handled entirely by x offset
-          }}
-        >
+        {/* Sliding row — fills remaining vertical space, vertically centered */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', width: '100%', overflow: 'hidden' }}>
+          <motion.div
+            style={{
+              x: xStart,
+              display: 'flex',
+              alignItems: 'center',
+              gap: CARD_GAP,
+              width: 'max-content',
+            }}
+          >
           {projects.map((project, index) => {
             const isHovered = hoveredCard === index;
+            const isMobile  = window.innerWidth < 640;
+
             return (
               <div
                 key={project.id}
                 onMouseEnter={() => setHoveredCard(index)}
                 onMouseLeave={() => setHoveredCard(null)}
                 style={{
-                  width: `min(${cardWidth}px, 88vw)`,
+                  width: `min(${cardWidth}px, 92vw)`,
                   flexShrink: 0,
                   borderRadius: 20,
                   overflow: 'hidden',
                   border: `1px solid ${isHovered ? project.accentColor + '55' : 'rgba(212,175,55,0.15)'}`,
-                  background: 'rgba(10,10,18,0.72)',
+                  background: 'rgba(10,10,18,0.75)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',
                   boxShadow: isHovered
@@ -166,98 +170,134 @@ export default function Projects() {
                 {/* Accent top bar */}
                 <div style={{ height: 3, background: `linear-gradient(90deg, ${project.accentColor}, transparent)` }} />
 
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                  {/* Visual panel */}
-                  <div style={{
-                    flex: '0 0 min(260px, 100%)',
-                    minHeight: 280,
-                    background: `radial-gradient(ellipse at 60% 40%, rgba(${project.accentRGB},0.12), transparent 65%), rgba(8,8,14,0.8)`,
-                    display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center',
-                    padding: 28, position: 'relative', gap: 14,
-                  }}>
-                    {/* Counter + Status */}
-                    <div style={{ position: 'absolute', top: 14, left: 14, right: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', color: `rgba(${project.accentRGB},0.45)` }}>
-                        {String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
-                      </span>
-                      <span style={{
-                        padding: '3px 9px', borderRadius: 20, fontSize: 9, fontWeight: 700,
-                        letterSpacing: '0.1em', textTransform: 'uppercase',
-                        background: `rgba(${project.accentRGB},0.1)`,
-                        border: `1px solid ${project.accentColor}30`,
-                        color: project.accentColor,
-                      }}>{project.status}</span>
+                {isMobile ? (
+                  /* ── MOBILE: compact single column ── */
+                  <div style={{ padding: '18px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+                    {/* Mobile header row: emoji + counter + status */}
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        <span style={{ fontSize: 32, filter: `drop-shadow(0 0 10px rgba(${project.accentRGB},0.5))` }}>
+                          {project.screenEmoji}
+                        </span>
+                        <div>
+                          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.85 }}>
+                            {project.subtitle}
+                          </p>
+                          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 900, color: '#F5F5F5', lineHeight: 1.2, letterSpacing: '-0.02em' }}>
+                            {project.title}
+                          </h3>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.15em', color: `rgba(${project.accentRGB},0.4)`, display: 'block' }}>
+                          {String(index + 1).padStart(2,'0')}/{String(projects.length).padStart(2,'0')}
+                        </span>
+                        <span style={{ padding: '2px 7px', borderRadius: 10, fontSize: 8, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', background: `rgba(${project.accentRGB},0.1)`, border: `1px solid ${project.accentColor}30`, color: project.accentColor }}>
+                          {project.status}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Floating emoji */}
-                    <motion.div
-                      animate={{ y: [0, -10, 0] }}
-                      transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.6 }}
-                      style={{ fontSize: 52, lineHeight: 1, filter: `drop-shadow(0 0 18px rgba(${project.accentRGB},0.5))` }}
-                    >
-                      {project.screenEmoji}
-                    </motion.div>
+                    {/* Description */}
+                    <p style={{ color: 'rgba(245,245,245,0.55)', fontSize: 12.5, lineHeight: 1.65, margin: 0 }}>
+                      {project.description}
+                    </p>
 
-                    {/* Label */}
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.8 }}>
-                      {project.screenLabel}
-                    </span>
-
-                    {/* Mock bars */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 5, width: 90 }}>
-                      {[100, 75, 50].map((w, i) => (
-                        <div key={i} style={{ height: 3, borderRadius: 2, width: `${w}%`, background: `rgba(${project.accentRGB},${0.4 - i * 0.1})` }} />
-                      ))}
-                    </div>
-
-                    {/* Year */}
-                    <span style={{ position: 'absolute', bottom: 12, left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--font-mono)', fontSize: 10, color: `rgba(${project.accentRGB},0.28)`, letterSpacing: '0.15em' }}>
-                      {project.year}
-                    </span>
-                  </div>
-
-                  {/* Content panel */}
-                  <div style={{ flex: 1, minWidth: 0, padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 14 }}>
-                    <div>
-                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: project.accentColor, marginBottom: 7, opacity: 0.9 }}>
-                        {project.subtitle}
-                      </p>
-                      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(20px, 2.5vw, 28px)', fontWeight: 900, color: '#F5F5F5', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 10 }}>
-                        {project.title}
-                      </h3>
-                      <p style={{ color: 'rgba(245,245,245,0.55)', fontSize: 13, lineHeight: 1.75 }}>
-                        {project.description}
-                      </p>
-                    </div>
-
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {/* Tech tags */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
                       {project.tech.map(t => <span key={t} className="tech-tag">{t}</span>)}
                     </div>
 
-                    <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${project.accentRGB},0.2), transparent)` }} />
+                    {/* Divider */}
+                    <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${project.accentRGB},0.25), transparent)` }} />
 
-                    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                    {/* Buttons */}
+                    <div style={{ display: 'flex', gap: 8 }}>
                       <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="btn-secondary" style={{ padding: '9px 18px', fontSize: 12 }}
-                        whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                        <GitHubIcon size={13} /> View Code
+                        className="btn-secondary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
+                        whileTap={{ scale: 0.96 }}>
+                        <GitHubIcon size={12} /> Code
                       </motion.a>
                       <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="btn-primary" style={{ padding: '9px 18px', fontSize: 12 }}
-                        whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                        <ExternalLink size={13} /> Details
+                        className="btn-primary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
+                        whileTap={{ scale: 0.96 }}>
+                        <ExternalLink size={12} /> Details
                       </motion.a>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  /* ── DESKTOP: two-panel side-by-side ── */
+                  <div style={{ display: 'flex' }}>
+                    {/* Visual panel */}
+                    <div style={{
+                      flex: '0 0 260px', minHeight: 300,
+                      background: `radial-gradient(ellipse at 60% 40%, rgba(${project.accentRGB},0.12), transparent 65%), rgba(8,8,14,0.8)`,
+                      display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                      padding: 28, position: 'relative', gap: 14,
+                    }}>
+                      <div style={{ position: 'absolute', top: 14, left: 14, right: 14, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', color: `rgba(${project.accentRGB},0.45)` }}>
+                          {String(index + 1).padStart(2,'0')} / {String(projects.length).padStart(2,'0')}
+                        </span>
+                        <span style={{ padding: '3px 9px', borderRadius: 20, fontSize: 9, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', background: `rgba(${project.accentRGB},0.1)`, border: `1px solid ${project.accentColor}30`, color: project.accentColor }}>
+                          {project.status}
+                        </span>
+                      </div>
+                      <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.6 }}
+                        style={{ fontSize: 52, lineHeight: 1, filter: `drop-shadow(0 0 18px rgba(${project.accentRGB},0.5))` }}>
+                        {project.screenEmoji}
+                      </motion.div>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.8 }}>
+                        {project.screenLabel}
+                      </span>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 5, width: 90 }}>
+                        {[100, 75, 50].map((w, i) => (
+                          <div key={i} style={{ height: 3, borderRadius: 2, width: `${w}%`, background: `rgba(${project.accentRGB},${0.4 - i * 0.1})` }} />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Content panel */}
+                    <div style={{ flex: 1, minWidth: 0, padding: '28px 24px', display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 14 }}>
+                      <div>
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: project.accentColor, marginBottom: 7, opacity: 0.9 }}>
+                          {project.subtitle}
+                        </p>
+                        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(20px, 2.5vw, 28px)', fontWeight: 900, color: '#F5F5F5', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 10 }}>
+                          {project.title}
+                        </h3>
+                        <p style={{ color: 'rgba(245,245,245,0.55)', fontSize: 13, lineHeight: 1.75 }}>
+                          {project.description}
+                        </p>
+                      </div>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                        {project.tech.map(t => <span key={t} className="tech-tag">{t}</span>)}
+                      </div>
+                      <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${project.accentRGB},0.2), transparent)` }} />
+                      <div style={{ display: 'flex', gap: 10 }}>
+                        <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
+                          className="btn-secondary" style={{ padding: '9px 18px', fontSize: 12 }}
+                          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                          <GitHubIcon size={13} /> View Code
+                        </motion.a>
+                        <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
+                          className="btn-primary" style={{ padding: '9px 18px', fontSize: 12 }}
+                          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                          <ExternalLink size={13} /> Details
+                        </motion.a>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}
-        </motion.div>
+          </motion.div>
+        </div>{/* end sliding row wrapper */}
 
-        {/* Progress dots */}
-        <div style={{ position: 'absolute', bottom: 24, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 10, alignItems: 'center' }}>
+        {/* Progress dots — anchored to bottom of sticky frame */}
+        <div style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 10, alignItems: 'center', zIndex: 10 }}>
           {projects.map((_, i) => (
             <ProgressDot key={i} progress={smoothProgress} index={i} total={projects.length} />
           ))}
