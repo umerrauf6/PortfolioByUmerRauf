@@ -102,12 +102,12 @@ function Starfield({ warpRef }: { warpRef: React.MutableRefObject<{ factor: numb
 
     // Gold palette
     const palette = [
-      new THREE.Color('#D4AF37'),
-      new THREE.Color('#F5D67B'),
-      new THREE.Color('#B8960C'),
-      new THREE.Color('#E8C840'),
-      new THREE.Color('#FFE4A0'),
-      new THREE.Color('#C8A020'),
+      new THREE.Color('#45D6C5'),
+      new THREE.Color('#A9B8FF'),
+      new THREE.Color('#2EA89B'),
+      new THREE.Color('#7C8CFF'),
+      new THREE.Color('#C7D2FF'),
+      new THREE.Color('#5B6EE1'),
     ];
 
     for (let i = 0; i < N; i++) {
@@ -268,11 +268,11 @@ function AmbientNebula() {
   const groupRef = useRef<THREE.Group>(null);
 
   const nebulae = useMemo(() => [
-    { pos: [0, 0, -20] as [number, number, number], scale: 60, color: '#D4AF37', opacity: 0.03 },
-    { pos: [45, 8, -10] as [number, number, number], scale: 40, color: '#F5D67B', opacity: 0.025 },
-    { pos: [-35, -8, -5] as [number, number, number], scale: 45, color: '#B8960C', opacity: 0.02 },
-    { pos: [25, -22, 0] as [number, number, number], scale: 50, color: '#D4AF37', opacity: 0.025 },
-    { pos: [-20, 18, -15] as [number, number, number], scale: 35, color: '#F5D67B', opacity: 0.03 },
+    { pos: [0, 0, -20] as [number, number, number], scale: 60, color: '#45D6C5', opacity: 0.03 },
+    { pos: [45, 8, -10] as [number, number, number], scale: 40, color: '#A9B8FF', opacity: 0.025 },
+    { pos: [-35, -8, -5] as [number, number, number], scale: 45, color: '#2EA89B', opacity: 0.02 },
+    { pos: [25, -22, 0] as [number, number, number], scale: 50, color: '#45D6C5', opacity: 0.025 },
+    { pos: [-20, 18, -15] as [number, number, number], scale: 35, color: '#A9B8FF', opacity: 0.03 },
   ], []);
 
   const textures = useMemo(() => {
@@ -445,18 +445,18 @@ export default function GalaxyBackground() {
         dpr={[1, 1.5]}
         style={{ pointerEvents: 'auto' }}
       >
-        <color attach="background" args={['#05050f']} />
+        <color attach="background" args={['#07111f']} />
 
         <Suspense fallback={null}>
           {/* Starfield */}
           <Starfield warpRef={warpRef} />
 
           {/* Section clusters */}
-          <StarCluster position={[0, 0, 0]}       color="#D4AF37" count={800}  spread={15} />
-          <StarCluster position={[45, 8, 0]}      color="#F5D67B" count={600}  spread={12} />
-          <StarCluster position={[-35, -8, 5]}    color="#B8960C" count={700}  spread={10} />
-          <StarCluster position={[25, -22, 10]}   color="#E8C840" count={650}  spread={14} />
-          <StarCluster position={[-20, 18, -5]}   color="#D4AF37" count={500}  spread={10} />
+          <StarCluster position={[0, 0, 0]}       color="#45D6C5" count={800}  spread={15} />
+          <StarCluster position={[45, 8, 0]}      color="#A9B8FF" count={600}  spread={12} />
+          <StarCluster position={[-35, -8, 5]}    color="#2EA89B" count={700}  spread={10} />
+          <StarCluster position={[25, -22, 10]}   color="#7C8CFF" count={650}  spread={14} />
+          <StarCluster position={[-20, 18, -5]}   color="#45D6C5" count={500}  spread={10} />
 
           {/* Nebula fog */}
           <AmbientNebula />

@@ -4,32 +4,32 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design Tokens: Graphite + Gold ─── */
+/* ─── Design Tokens: Midnight + Sea Glass ─── */
 :root {
   /* Background */
-  --bg-primary:   #05050f;
-  --bg-surface:   rgba(14, 14, 22, 0.75);
-  --bg-card:      rgba(255,255,255,0.04);
+  --bg-primary:   #07111f;
+  --bg-surface:   rgba(12, 29, 45, 0.78);
+  --bg-card:      rgba(170, 215, 225, 0.055);
 
   /* Text */
-  --text-primary: #F5F5F5;
-  --text-body:    rgba(245,245,245,0.75);
-  --text-muted:   #A1A1AA;
+  --text-primary: #F2F7F8;
+  --text-body:    rgba(226,238,241,0.78);
+  --text-muted:   #93A8B5;
 
-  /* Gold Accents */
-  --gold:         #D4AF37;
-  --gold-light:   #F5D67B;
-  --gold-dark:    #B8960C;
-  --gold-dim:     rgba(212,175,55,0.2);
-  --gold-glow:    rgba(212,175,55,0.15);
+  /* Sea-glass accents (legacy variable names retained for component compatibility) */
+  --gold:         #45D6C5;
+  --gold-light:   #A9B8FF;
+  --gold-dark:    #2EA89B;
+  --gold-dim:     rgba(69,214,197,0.2);
+  --gold-glow:    rgba(69,214,197,0.15);
 
   /* Borders */
-  --border:       rgba(212,175,55,0.2);
-  --border-soft:  rgba(255,255,255,0.06);
+  --border:       rgba(91, 199, 193, 0.22);
+  --border-soft:  rgba(192, 220, 226, 0.08);
 
   /* Gradients */
-  --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F5D67B 50%, #D4AF37 100%);
-  --gold-gradient-2: linear-gradient(135deg, #D4AF37, #F5D67B);
+  --gold-gradient: linear-gradient(135deg, #45D6C5 0%, #A9B8FF 52%, #45D6C5 100%);
+  --gold-gradient-2: linear-gradient(135deg, #45D6C5, #A9B8FF);
 
   /* Typography */
   --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -50,10 +50,10 @@ html {
 /* ─── Base Body ─── */
 body {
   background-color: var(--bg-primary);
-  /* Very subtle gold grid — slightly brighter on deeper bg */
+  /* Subtle sea-glass grid over the midnight canvas */
   background-image:
-    linear-gradient(rgba(212,175,55,0.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212,175,55,0.018) 1px, transparent 1px);
+    linear-gradient(rgba(69,214,197,0.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(69,214,197,0.022) 1px, transparent 1px);
   background-size: 80px 80px;
   background-attachment: fixed;
   color: var(--text-primary);
@@ -97,7 +97,7 @@ body::after {
   border-radius: 2px;
 }
 
-::selection { background: rgba(212,175,55,0.25); color: #fff; }
+::selection { background: rgba(69,214,197,0.28); color: #fff; }
 
 /* ─── Custom Cursor ─── */
 .cursor-dot {
@@ -117,14 +117,14 @@ body::after {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 1.5px solid rgba(212,175,55,0.5);
+  border: 1.5px solid rgba(69,214,197,0.5);
   pointer-events: none;
   z-index: 99998;
   transform: translate(-50%, -50%);
   transition: transform 0.15s, width 0.3s var(--transition), height 0.3s var(--transition), opacity 0.3s;
 }
 .cursor-dot.hovering { width: 14px; height: 14px; }
-.cursor-ring.hovering { width: 56px; height: 56px; border-color: rgba(212,175,55,0.8); }
+.cursor-ring.hovering { width: 56px; height: 56px; border-color: rgba(69,214,197,0.8); }
 
 /* ─── Mouse Spotlight ─── */
 .spotlight {
@@ -133,19 +133,19 @@ body::after {
   pointer-events: none;
   z-index: 1;
   background: radial-gradient(circle 400px at var(--mx, 50%) var(--my, 50%),
-    rgba(212,175,55,0.04), transparent 70%);
+    rgba(69,214,197,0.05), transparent 70%);
   transition: background 0.1s;
 }
 
 /* ─── Glass ─── */
 .glass {
-  background: rgba(21,21,24,0.7);
+  background: rgba(10,25,39,0.72);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border);
 }
 .glass-strong {
-  background: rgba(11,11,13,0.92);
+  background: rgba(6,17,30,0.92);
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid var(--border);
@@ -162,12 +162,12 @@ body::after {
 /* ─── Gold border glow ─── */
 .gold-border {
   border: 1px solid var(--border);
-  box-shadow: 0 0 20px rgba(212,175,55,0.06), inset 0 0 20px rgba(212,175,55,0.03);
+  box-shadow: 0 0 20px rgba(69,214,197,0.07), inset 0 0 20px rgba(69,214,197,0.035);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 .gold-border:hover {
-  border-color: rgba(212,175,55,0.45);
-  box-shadow: 0 0 30px rgba(212,175,55,0.12), inset 0 0 20px rgba(212,175,55,0.05);
+  border-color: rgba(69,214,197,0.48);
+  box-shadow: 0 0 30px rgba(69,214,197,0.14), inset 0 0 20px rgba(169,184,255,0.05);
 }
 
 /* ─── Shine sweep ─── */
@@ -177,7 +177,7 @@ body::after {
   position: absolute;
   top: -50%; left: -60%;
   width: 40%; height: 200%;
-  background: linear-gradient(105deg, transparent 40%, rgba(212,175,55,0.06) 50%, transparent 60%);
+  background: linear-gradient(105deg, transparent 40%, rgba(169,184,255,0.08) 50%, transparent 60%);
   transform: skewX(-20deg);
   transition: left 0.8s var(--transition);
 }
@@ -191,16 +191,16 @@ body::after {
   border-radius: 4px;
   font-size: 12px;
   font-weight: 500;
-  background: rgba(212,175,55,0.08);
+  background: rgba(69,214,197,0.09);
   color: var(--gold-light);
-  border: 1px solid rgba(212,175,55,0.2);
+  border: 1px solid rgba(69,214,197,0.22);
   transition: all 0.2s;
   letter-spacing: 0.02em;
 }
 .tech-tag:hover {
-  background: rgba(212,175,55,0.15);
+  background: rgba(69,214,197,0.16);
   color: var(--gold);
-  box-shadow: 0 0 14px rgba(212,175,55,0.2);
+  box-shadow: 0 0 14px rgba(69,214,197,0.22);
 }
 
 /* ─── Buttons ─── */
@@ -213,18 +213,18 @@ body::after {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, #D4AF37, #F5D67B);
-  color: #0B0B0D;
+  background: linear-gradient(135deg, #45D6C5, #A9B8FF);
+  color: #07111F;
   border: none;
   border-radius: 6px;
   cursor: none;
   transition: all 0.3s;
   text-decoration: none;
-  box-shadow: 0 0 24px rgba(212,175,55,0.25);
+  box-shadow: 0 0 24px rgba(69,214,197,0.24);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 40px rgba(212,175,55,0.45), 0 8px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 0 40px rgba(69,214,197,0.38), 0 8px 30px rgba(3,9,18,0.38);
 }
 
 .btn-secondary {
@@ -245,10 +245,10 @@ body::after {
   text-decoration: none;
 }
 .btn-secondary:hover {
-  background: rgba(212,175,55,0.08);
+  background: rgba(69,214,197,0.09);
   border-color: var(--gold-light);
   color: var(--gold-light);
-  box-shadow: 0 0 20px rgba(212,175,55,0.18);
+  box-shadow: 0 0 20px rgba(69,214,197,0.2);
   transform: translateY(-2px);
 }
 
@@ -301,20 +301,20 @@ body::after {
 
 /* ─── Achievement counter ─── */
 .counter-card {
-  background: rgba(212,175,55,0.06);
+  background: rgba(69,214,197,0.065);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(212,175,55,0.2);
+  border: 1px solid rgba(69,214,197,0.2);
   border-radius: 12px;
   padding: 20px 24px;
   text-align: center;
   transition: all 0.3s;
 }
 .counter-card:hover {
-  background: rgba(212,175,55,0.1);
-  border-color: rgba(212,175,55,0.4);
+  background: rgba(69,214,197,0.11);
+  border-color: rgba(69,214,197,0.42);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(212,175,55,0.12);
+  box-shadow: 0 12px 40px rgba(69,214,197,0.14);
 }
 
 /* ─── Timeline ─── */
@@ -323,12 +323,12 @@ body::after {
   left: 0;
   top: 0;
   width: 2px;
-  background: rgba(212,175,55,0.15);
+  background: rgba(69,214,197,0.16);
   border-radius: 1px;
 }
 .timeline-line-fill {
   width: 100%;
-  background: linear-gradient(to bottom, var(--gold), var(--gold-light), rgba(212,175,55,0.3));
+  background: linear-gradient(to bottom, var(--gold), var(--gold-light), rgba(69,214,197,0.3));
   border-radius: 1px;
   transition: height 1.2s cubic-bezier(0.4,0,0.2,1);
 }
@@ -338,23 +338,23 @@ body::after {
   border-radius: 50%;
   background: var(--gold);
   border: 2px solid var(--bg-primary);
-  box-shadow: 0 0 14px rgba(212,175,55,0.6);
+  box-shadow: 0 0 14px rgba(69,214,197,0.58);
   flex-shrink: 0;
 }
 
 /* ─── Project card ─── */
 .project-card {
-  background: rgba(14, 14, 22, 0.72);
+  background: rgba(10, 25, 40, 0.74);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(212,175,55,0.15);
+  border: 1px solid rgba(69,214,197,0.16);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.4s var(--transition);
 }
 .project-card:hover {
-  border-color: rgba(212,175,55,0.4);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212,175,55,0.08);
+  border-color: rgba(69,214,197,0.42);
+  box-shadow: 0 20px 60px rgba(3,9,18,0.55), 0 0 40px rgba(69,214,197,0.1);
   transform: translateY(-6px);
 }
 
@@ -383,7 +383,7 @@ body::after {
 .gold-input {
   width: 100%;
   background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(212,175,55,0.15);
+  border: 1px solid rgba(69,214,197,0.16);
   border-radius: 8px;
   padding: 13px 16px;
   font-size: 14px;
@@ -394,8 +394,8 @@ body::after {
   resize: none;
 }
 .gold-input:focus {
-  border-color: rgba(212,175,55,0.55);
-  box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+  border-color: rgba(69,214,197,0.58);
+  box-shadow: 0 0 0 3px rgba(69,214,197,0.09);
 }
 .gold-input::placeholder {
   color: var(--text-muted);
@@ -408,8 +408,8 @@ body::after {
 }
 
 @keyframes goldPulse {
-  0%,100% { box-shadow: 0 0 14px rgba(212,175,55,0.4); }
-  50%      { box-shadow: 0 0 28px rgba(212,175,55,0.8); }
+  0%,100% { box-shadow: 0 0 14px rgba(69,214,197,0.4); }
+  50%      { box-shadow: 0 0 28px rgba(69,214,197,0.8); }
 }
 
 @keyframes spinSlow {
@@ -446,10 +446,10 @@ body::after {
 /* ─── Nebula orb (CSS replacement for Canvas decorations) ─── */
 .nebula-orb {
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(212,175,55,0.6), rgba(245,214,123,0.2) 50%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(69,214,197,0.58), rgba(169,184,255,0.22) 50%, transparent 70%);
   animation: nebulaPulse 3s ease-in-out infinite;
   filter: blur(1px);
-  box-shadow: 0 0 40px rgba(212,175,55,0.3), 0 0 80px rgba(212,175,55,0.1);
+  box-shadow: 0 0 40px rgba(69,214,197,0.3), 0 0 80px rgba(169,184,255,0.12);
 }
 
 @keyframes nebulaPulse {
@@ -460,7 +460,7 @@ body::after {
 /* ─── CSS orbit ring (replaces Canvas torus rings) ─── */
 .css-orbit-ring {
   border-radius: 50%;
-  border: 1.5px solid rgba(212,175,55,0.25);
+  border: 1.5px solid rgba(69,214,197,0.26);
   animation: ringOrbit 8s linear infinite;
   transform-style: preserve-3d;
 }

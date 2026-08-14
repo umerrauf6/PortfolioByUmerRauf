@@ -25,7 +25,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(212,175,55,0.12)', marginTop: 80, paddingTop: 0 }}>
+    <footer className="relative overflow-hidden" style={{ borderTop: '1px solid rgba(69,214,197,0.12)', marginTop: 80, paddingTop: 0 }}>
 
       {/* CSS gold ring particle decoration */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -35,7 +35,7 @@ export default function Footer() {
           style={{
             width: 400,
             height: 400,
-            border: '1px solid rgba(212,175,55,0.08)',
+            border: '1px solid rgba(69,214,197,0.08)',
             transform: 'translate(-50%, -50%)',
             animation: 'footerRing 40s linear infinite',
           }}
@@ -45,7 +45,7 @@ export default function Footer() {
           style={{
             width: 280,
             height: 280,
-            border: '1px solid rgba(212,175,55,0.06)',
+            border: '1px solid rgba(69,214,197,0.06)',
             transform: 'translate(-50%, -50%)',
             animation: 'footerRing 28s linear infinite reverse',
           }}
@@ -55,7 +55,7 @@ export default function Footer() {
           style={{
             width: 160,
             height: 160,
-            border: '1px solid rgba(212,175,55,0.05)',
+            border: '1px solid rgba(69,214,197,0.05)',
             transform: 'translate(-50%, -50%)',
             animation: 'footerRing 18s linear infinite',
           }}
@@ -64,7 +64,7 @@ export default function Footer() {
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-32 rounded-full"
           style={{
-            background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.04), transparent 70%)',
+            background: 'radial-gradient(ellipse at center, rgba(69,214,197,0.04), transparent 70%)',
             filter: 'blur(30px)',
           }}
         />
@@ -84,7 +84,7 @@ export default function Footer() {
           {/* Built with */}
           <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--text-muted)' }}>
             <span>Built with</span>
-            <Heart size={11} className="text-yellow-500 fill-yellow-500" />
+            <Heart size={11} style={{ color: 'var(--gold)', fill: 'var(--gold)' }} />
             <span>React · Three.js · Framer Motion</span>
           </div>
 
@@ -98,7 +98,7 @@ export default function Footer() {
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={label}
                 className="w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-200 gold-border"
-                style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)' }}
+                style={{ background: 'rgba(69,214,197,0.06)', color: 'rgba(69,214,197,0.7)' }}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -109,8 +109,8 @@ export default function Footer() {
 
         </div>
 
-        <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(212,175,55,0.06)' }}>
-          <p className="text-xs" style={{ color: 'rgba(212,175,55,0.25)', fontFamily: 'var(--font-mono)' }}>
+        <div className="mt-8 pt-6 text-center" style={{ borderTop: '1px solid rgba(69,214,197,0.06)' }}>
+          <p className="text-xs" style={{ color: 'rgba(69,214,197,0.25)', fontFamily: 'var(--font-mono)' }}>
             © {year} Umer Rauf · All rights reserved · Siegen, Germany
           </p>
         </div>

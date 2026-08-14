@@ -11,7 +11,7 @@ function ProgressDot({ progress, index, total }: { progress: MotionValue<number>
   return (
     <motion.div style={{
       width: 7, height: 7, borderRadius: '50%',
-      background: 'linear-gradient(135deg, #D4AF37, #F5D67B)',
+      background: 'linear-gradient(135deg, #45D6C5, #A9B8FF)',
       scale: dotScale, opacity: dotOpacity,
     }} />
   );
@@ -32,7 +32,7 @@ const projects = [
     subtitle: 'LLM API Integration',
     description: 'Full-stack AI chat assistant with real-time streaming completions, document parsing, and multi-model support using OpenAI and Anthropic APIs.',
     tech: ['Next.js', 'TypeScript', 'Node.js', 'LLM APIs', 'MongoDB'],
-    accentColor: '#D4AF37', accentRGB: '212,175,55',
+    accentColor: '#45D6C5', accentRGB: '69,214,197',
     status: 'Production', github: 'https://github.com/umerrauf6',
     screenEmoji: '🤖', screenLabel: 'AI Chat Platform', year: '2024',
   },
@@ -42,7 +42,7 @@ const projects = [
     subtitle: 'Full-Stack Web Application',
     description: 'Highly responsive dashboard built for B2B clients featuring complex data visualizations, role-based access control, and real-time analytics.',
     tech: ['React', 'Node.js', 'MongoDB', 'REST APIs', 'Agile'],
-    accentColor: '#F5D67B', accentRGB: '245,214,123',
+    accentColor: '#A9B8FF', accentRGB: '169,184,255',
     status: 'Client Project', github: 'https://github.com/umerrauf6',
     screenEmoji: '📊', screenLabel: 'SaaS Dashboard', year: '2024',
   },
@@ -52,7 +52,7 @@ const projects = [
     subtitle: 'NestJS & TypeScript',
     description: 'Scalable NestJS backend with TypeScript, JWT authentication, MongoDB integration, input validation, and comprehensive API documentation.',
     tech: ['NestJS', 'TypeScript', 'MongoDB', 'JWT', 'REST APIs'],
-    accentColor: '#D4AF37', accentRGB: '212,175,55',
+    accentColor: '#45D6C5', accentRGB: '69,214,197',
     status: 'Open Source', github: 'https://github.com/umerrauf6',
     screenEmoji: '⚡', screenLabel: 'REST API', year: '2023',
   },
@@ -156,7 +156,7 @@ export default function Projects() {
                   flexShrink: 0,
                   borderRadius: 20,
                   overflow: 'hidden',
-                  border: `1px solid ${isHovered ? project.accentColor + '55' : 'rgba(212,175,55,0.15)'}`,
+                  border: `1px solid ${isHovered ? project.accentColor + '55' : 'rgba(69,214,197,0.15)'}`,
                   background: 'rgba(10,10,18,0.75)',
                   backdropFilter: 'blur(24px)',
                   WebkitBackdropFilter: 'blur(24px)',

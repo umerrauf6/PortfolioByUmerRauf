@@ -35,7 +35,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: '#05050f',
+          background: '#07111f',
           pointerEvents: phase === 'exit' ? 'none' : 'all',
         }}
       >
@@ -46,7 +46,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             width: 500,
             height: 300,
             borderRadius: '50%',
-            background: 'radial-gradient(ellipse, rgba(212,175,55,0.08), transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(69,214,197,0.08), transparent 70%)',
             filter: 'blur(60px)',
           }}
         />
@@ -66,8 +66,8 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
               fontSize: 72,
               fontWeight: 900,
               letterSpacing: '-0.03em',
-              fill: phase === 'filling' || phase === 'exit' ? '#D4AF37' : 'transparent',
-              stroke: '#D4AF37',
+              fill: phase === 'filling' || phase === 'exit' ? '#45D6C5' : 'transparent',
+              stroke: '#45D6C5',
               strokeWidth: 1.5,
               strokeDasharray: 600,
               strokeDashoffset: phase === 'drawing' ? 600 : 0,
@@ -90,7 +90,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
               fontWeight: 900,
               letterSpacing: '-0.03em',
               fill: phase === 'filling' || phase === 'exit' ? '#F5F5F5' : 'transparent',
-              stroke: '#F5D67B',
+              stroke: '#A9B8FF',
               strokeWidth: 1.5,
               strokeDasharray: 600,
               strokeDashoffset: phase === 'drawing' ? 600 : 0,
@@ -112,7 +112,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             fontFamily: "'Share Tech Mono', monospace",
             fontSize: 12,
             letterSpacing: '0.35em',
-            color: 'rgba(212,175,55,0.5)',
+            color: 'rgba(69,214,197,0.5)',
             marginTop: 20,
             textTransform: 'uppercase',
           }}
@@ -127,7 +127,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             width: 'min(50vw, 200px)',
             height: 2,
             borderRadius: 1,
-            background: 'rgba(212,175,55,0.15)',
+            background: 'rgba(69,214,197,0.15)',
             overflow: 'hidden',
           }}
         >
@@ -137,7 +137,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             transition={{ duration: 2.8, ease: 'easeInOut' }}
             style={{
               height: '100%',
-              background: 'linear-gradient(90deg, #D4AF37, #F5D67B)',
+              background: 'linear-gradient(90deg, #45D6C5, #A9B8FF)',
               borderRadius: 1,
             }}
           />
@@ -155,7 +155,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
                 width: 6,
                 height: 6,
                 borderRadius: '50%',
-                background: '#D4AF37',
+                background: '#45D6C5',
               }}
             />
           ))}
@@ -171,7 +171,7 @@ export default function LoadingScreen({ onComplete }: { onComplete: () => void }
             fontFamily: "'Share Tech Mono', monospace",
             fontSize: 10,
             letterSpacing: '0.3em',
-            color: '#D4AF37',
+            color: '#45D6C5',
           }}
         >
           PORTFOLIO

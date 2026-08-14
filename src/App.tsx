@@ -102,7 +102,7 @@ function App() {
           pointerEvents: 'none',
         }}
       >
-        <Suspense fallback={<div style={{ width: '100%', height: '100%', background: '#05050f' }} />}>
+        <Suspense fallback={<div style={{ width: '100%', height: '100%', background: '#07111f' }} />}>
           <GalaxyBackground />
         </Suspense>
       </div>

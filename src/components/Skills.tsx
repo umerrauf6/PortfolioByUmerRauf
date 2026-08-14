@@ -5,7 +5,7 @@ import { Reveal3D } from './Reveal3D';
 const skillGroups = [
   {
     category: 'FRONTEND',
-    color1: '#D4AF37', color2: '#F5D67B',
+    color1: '#45D6C5', color2: '#A9B8FF',
     skills: [
       { name: 'React',        level: 95 },
       { name: 'Next.js',      level: 90 },
@@ -17,7 +17,7 @@ const skillGroups = [
   },
   {
     category: 'BACKEND',
-    color1: '#C8A020', color2: '#E8C840',
+    color1: '#5B6EE1', color2: '#7C8CFF',
     skills: [
       { name: 'Node.js',    level: 88 },
       { name: 'NestJS',     level: 82 },
@@ -29,7 +29,7 @@ const skillGroups = [
   },
   {
     category: 'AI & TOOLS',
-    color1: '#B8960C', color2: '#D4AF37',
+    color1: '#2EA89B', color2: '#45D6C5',
     skills: [
       { name: 'LLM APIs',       level: 85 },
       { name: 'GitHub Copilot', level: 90 },
@@ -48,7 +48,7 @@ export default function Skills() {
   const dirs = ['left', 'up', 'right'] as const;
 
   return (
-    <section id="skills" className="section" style={{ background: 'linear-gradient(180deg, transparent, rgba(212,175,55,0.02) 50%, transparent)' }}>
+    <section id="skills" className="section" style={{ background: 'linear-gradient(180deg, transparent, rgba(69,214,197,0.02) 50%, transparent)' }}>
       <div className="section-inner" ref={ref}>
 
         {/* Header */}
@@ -72,11 +72,11 @@ export default function Skills() {
                   className="shine-effect relative flex flex-col"
                   style={{
                     background: 'rgba(14,14,22,0.55)',
-                    border: `1px solid ${isHovered ? `rgba(212,175,55,0.6)` : 'rgba(212,175,55,0.18)'}`,
+                    border: `1px solid ${isHovered ? `rgba(69,214,197,0.6)` : 'rgba(69,214,197,0.18)'}`,
                     borderRadius: 16,
                     backdropFilter: 'blur(20px)',
                     boxShadow: isHovered
-                      ? `0 0 60px rgba(212,175,55,0.18), inset 0 0 40px rgba(212,175,55,0.05)`
+                      ? `0 0 60px rgba(69,214,197,0.18), inset 0 0 40px rgba(69,214,197,0.05)`
                       : 'none',
                     transition: 'box-shadow 0.3s, border-color 0.3s',
                   }}
@@ -87,7 +87,7 @@ export default function Skills() {
                 >
                   {/* Top accent line */}
                   <div className="absolute top-0 left-0 right-0 h-px rounded-t-2xl"
-                    style={{ background: `linear-gradient(90deg, transparent, rgba(212,175,55,${isHovered ? 0.8 : 0.3}), transparent)` }} />
+                    style={{ background: `linear-gradient(90deg, transparent, rgba(69,214,197,${isHovered ? 0.8 : 0.3}), transparent)` }} />
 
                   {/* CSS decorative header (replaces Canvas) */}
                   <div style={{ height: 150, position: 'relative', overflow: 'hidden' }}>
@@ -152,7 +152,7 @@ export default function Skills() {
                           <div className="h-px rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
                             <motion.div
                               className="h-full rounded-full"
-                              style={{ background: `linear-gradient(90deg, rgba(212,175,55,0.4), ${group.color1})` }}
+                              style={{ background: `linear-gradient(90deg, rgba(69,214,197,0.4), ${group.color1})` }}
                               initial={{ width: 0 }}
                               animate={inView ? { width: `${level}%` } : {}}
                               transition={{ duration: 1, delay: 0.3 + i * 0.15 + si * 0.04, ease: 'easeOut' }}
@@ -165,7 +165,7 @@ export default function Skills() {
 
                   {/* Bottom accent */}
                   <div className="absolute bottom-0 left-0 right-0 h-px rounded-b-2xl"
-                    style={{ background: `linear-gradient(90deg, transparent, rgba(212,175,55,${isHovered ? 0.5 : 0.12}), transparent)` }} />
+                    style={{ background: `linear-gradient(90deg, transparent, rgba(69,214,197,${isHovered ? 0.5 : 0.12}), transparent)` }} />
                 </motion.div>
               </Reveal3D>
             );

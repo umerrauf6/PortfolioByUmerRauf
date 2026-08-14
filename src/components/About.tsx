@@ -29,8 +29,8 @@ const timeline = [
     description: "Master's degree focusing on advanced software engineering, distributed systems, and AI/ML applications.",
     tags: ['Computer Science', 'AI/ML', 'Distributed Systems'],
     Icon: GraduationCap,
-    color: '#D4AF37',
-    borderColor: 'rgba(212,175,55,0.3)',
+    color: '#45D6C5',
+    borderColor: 'rgba(69,214,197,0.3)',
   },
   {
     year: '2023',
@@ -41,8 +41,8 @@ const timeline = [
     description: 'Built full-stack B2B web applications using React, Node.js, and MongoDB. Code reviews, testing, and feature delivery end-to-end in an Agile team.',
     tags: ['React', 'Node.js', 'MongoDB', 'Agile'],
     Icon: Briefcase,
-    color: '#F5D67B',
-    borderColor: 'rgba(245,214,123,0.3)',
+    color: '#A9B8FF',
+    borderColor: 'rgba(169,184,255,0.3)',
   },
   {
     year: '2018',
@@ -53,7 +53,7 @@ const timeline = [
     description: "Bachelor's in Software Engineering covering design patterns, databases, algorithms, and full-stack development fundamentals.",
     tags: ['Software Engineering', 'Databases', 'Algorithms'],
     Icon: GraduationCap,
-    color: '#B8960C',
+    color: '#2EA89B',
     borderColor: 'rgba(184,150,12,0.3)',
   },
 ];
@@ -88,7 +88,7 @@ export default function About() {
 
       {/* Subtle gold radial bg */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 60% 60% at 80% 50%, rgba(212,175,55,0.04), transparent)' }} />
+        style={{ background: 'radial-gradient(ellipse 60% 60% at 80% 50%, rgba(69,214,197,0.04), transparent)' }} />
 
       <div className="section-inner" ref={ref} style={{ position: 'relative', zIndex: 1 }}>
 
@@ -122,7 +122,7 @@ export default function About() {
           {/* LEFT — Timeline */}
           <Reveal3D direction="left" delay={0.15} className="lg:col-span-2">
             <div className="glass rounded-2xl p-7 gold-border">
-              <h3 className="font-display font-bold text-base mb-7 flex items-center gap-2" style={{ color: '#F5D67B' }}>
+              <h3 className="font-display font-bold text-base mb-7 flex items-center gap-2" style={{ color: '#A9B8FF' }}>
                 <span className="w-1.5 h-5 rounded-full" style={{ background: 'var(--gold-gradient)' }} />
                 Timeline
               </h3>
@@ -223,7 +223,7 @@ export default function About() {
                 </div>
                 {/* Orbiting ring 2 */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="css-orbit-ring" style={{ width: 200, height: 200, animationDuration: '12s', animationDirection: 'reverse', borderColor: 'rgba(245,214,123,0.2)' }} />
+                  <div className="css-orbit-ring" style={{ width: 200, height: 200, animationDuration: '12s', animationDirection: 'reverse', borderColor: 'rgba(169,184,255,0.2)' }} />
                 </div>
                 {/* Inner glow */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -231,7 +231,7 @@ export default function About() {
                     width: 140,
                     height: 140,
                     borderRadius: '50%',
-                    background: 'radial-gradient(ellipse, rgba(212,175,55,0.15), transparent 70%)',
+                    background: 'radial-gradient(ellipse, rgba(69,214,197,0.15), transparent 70%)',
                     filter: 'blur(20px)',
                     animation: 'nebulaPulse 3s ease-in-out infinite',
                   }} />
@@ -242,15 +242,15 @@ export default function About() {
             {/* Certifications */}
             <Reveal3D direction="right" delay={0.3}>
               <div className="glass rounded-2xl p-5 gold-border">
-                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#F5D67B' }}>
-                  <Award size={14} style={{ color: '#D4AF37' }} /> Certifications
+                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#A9B8FF' }}>
+                  <Award size={14} style={{ color: '#45D6C5' }} /> Certifications
                 </h3>
                 <div className="space-y-3">
                   {certifications.map((cert, i) => (
                     <div key={i} className="flex gap-3 p-3 rounded-xl"
-                      style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.14)' }}>
+                      style={{ background: 'rgba(69,214,197,0.06)', border: '1px solid rgba(69,214,197,0.14)' }}>
                       <div className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-black"
-                        style={{ background: 'rgba(212,175,55,0.2)', color: '#D4AF37' }}>{i + 1}</div>
+                        style={{ background: 'rgba(69,214,197,0.2)', color: '#45D6C5' }}>{i + 1}</div>
                       <div>
                         <p className="text-sm font-medium leading-snug" style={{ color: '#F5F5F5' }}>{cert.title}</p>
                         <p className="text-xs mt-1" style={{ color: 'rgba(245,245,245,0.45)' }}>{cert.issuer}</p>
@@ -264,8 +264,8 @@ export default function About() {
             {/* Languages */}
             <Reveal3D direction="right" delay={0.4}>
               <div className="glass rounded-2xl p-5 gold-border">
-                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#F5D67B' }}>
-                  <Globe size={14} style={{ color: '#D4AF37' }} /> Languages
+                <h3 className="font-display font-bold text-sm mb-4 flex items-center gap-2" style={{ color: '#A9B8FF' }}>
+                  <Globe size={14} style={{ color: '#45D6C5' }} /> Languages
                 </h3>
                 <div className="space-y-4">
                   {languages.map(({ lang, level, pct }, i) => (
@@ -277,7 +277,7 @@ export default function About() {
                       <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
                         <motion.div
                           className="h-full rounded-full"
-                          style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)' }}
+                          style={{ background: 'linear-gradient(90deg, #45D6C5, #A9B8FF)' }}
                           initial={{ width: 0 }}
                           animate={inView ? { width: `${pct}%` } : {}}
                           transition={{ duration: 1.2, delay: 0.7 + i * 0.15, ease: 'easeOut' as const }}

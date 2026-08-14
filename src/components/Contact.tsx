@@ -52,7 +52,7 @@ export default function Contact() {
           <div className="css-orbit-ring" style={{ width: 160, height: 160, animationDuration: '7s' }} />
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
-          <div className="css-orbit-ring" style={{ width: 230, height: 230, animationDuration: '11s', animationDirection: 'reverse', borderColor: 'rgba(245,214,123,0.15)' }} />
+          <div className="css-orbit-ring" style={{ width: 230, height: 230, animationDuration: '11s', animationDirection: 'reverse', borderColor: 'rgba(169,184,255,0.15)' }} />
         </div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="css-orbit-ring" style={{ width: 300, height: 300, animationDuration: '16s', borderColor: 'rgba(184,150,12,0.1)' }} />
@@ -63,7 +63,7 @@ export default function Contact() {
             width: 200,
             height: 200,
             borderRadius: '50%',
-            background: 'radial-gradient(ellipse, rgba(212,175,55,0.12), transparent 70%)',
+            background: 'radial-gradient(ellipse, rgba(69,214,197,0.12), transparent 70%)',
             filter: 'blur(30px)',
             animation: 'nebulaPulse 4s ease-in-out infinite',
           }} />
@@ -97,9 +97,9 @@ export default function Contact() {
             className="glass rounded-2xl p-8 flex flex-col gap-4 relative overflow-hidden gold-border"
           >
             <div className="absolute top-0 left-0 w-64 h-64 rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.06), transparent)', filter: 'blur(50px)' }} />
+              style={{ background: 'radial-gradient(ellipse, rgba(69,214,197,0.06), transparent)', filter: 'blur(50px)' }} />
             <div className="relative z-10">
-              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Contact Info</h3>
+              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#A9B8FF' }}>Contact Info</h3>
               <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Feel free to reach out through any of these channels.</p>
 
               <div className="flex flex-col gap-3">
@@ -112,12 +112,12 @@ export default function Contact() {
                     animate={inView ? { opacity: 1, x: 0 } : {}}
                     transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
                     className="flex items-center gap-4 p-4 rounded-xl transition-all duration-300 group"
-                    style={{ background: 'rgba(212,175,55,0.04)', border: '1px solid rgba(212,175,55,0.12)', color: '#F5D67B' }}
+                    style={{ background: 'rgba(69,214,197,0.04)', border: '1px solid rgba(69,214,197,0.12)', color: '#A9B8FF' }}
                     whileHover={{ x: 5, scale: 1.01 } as any}
                   >
                     <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
-                      style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)' }}
+                      style={{ background: 'rgba(69,214,197,0.08)', border: '1px solid rgba(69,214,197,0.2)' }}
                     >
                       <Icon size={17} />
                     </div>
@@ -136,13 +136,13 @@ export default function Contact() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.7 }}
                 className="mt-5 flex items-center gap-3 p-4 rounded-xl"
-                style={{ background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.2)' }}
+                style={{ background: 'rgba(69,214,197,0.06)', border: '1px solid rgba(69,214,197,0.2)' }}
               >
                 <span className="relative flex h-2.5 w-2.5 flex-shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-emerald-400" />
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
                 </span>
-                <span className="text-sm font-medium" style={{ color: '#D4AF37' }}>Available for new opportunities</span>
+                <span className="text-sm font-medium" style={{ color: '#45D6C5' }}>Available for new opportunities</span>
               </motion.div>
             </div>
           </motion.div>
@@ -155,9 +155,9 @@ export default function Contact() {
             className="glass rounded-2xl p-8 flex flex-col relative overflow-hidden gold-border"
           >
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.05), transparent)', filter: 'blur(40px)' }} />
+              style={{ background: 'radial-gradient(ellipse, rgba(69,214,197,0.05), transparent)', filter: 'blur(40px)' }} />
             <div className="relative z-10 flex flex-col flex-1">
-              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Send a Message</h3>
+              <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#A9B8FF' }}>Send a Message</h3>
               <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>Fill in the form — it will open your email client ready to send.</p>
 
               <AnimatePresence mode="wait">
@@ -203,7 +203,7 @@ export default function Contact() {
                       whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }}>
                       <Send size={15} /> Send via Email Client
                     </motion.button>
-                    <p className="text-center text-xs" style={{ color: 'rgba(212,175,55,0.35)' }}>
+                    <p className="text-center text-xs" style={{ color: 'rgba(69,214,197,0.35)' }}>
                       Opens your email app with message pre-filled.
                     </p>
                   </motion.form>
@@ -213,10 +213,10 @@ export default function Contact() {
                     className="flex flex-col items-center justify-center flex-1 gap-5 text-center py-8">
                     <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
                       transition={{ type: 'spring', stiffness: 400, damping: 20, delay: 0.1 }}>
-                      <CheckCircle2 size={60} style={{ color: '#D4AF37' }} />
+                      <CheckCircle2 size={60} style={{ color: '#45D6C5' }} />
                     </motion.div>
                     <div>
-                      <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#F5D67B' }}>Email Client Opened!</h3>
+                      <h3 className="font-display font-bold text-xl mb-2" style={{ color: '#A9B8FF' }}>Email Client Opened!</h3>
                       <p className="text-sm max-w-xs" style={{ color: 'var(--text-muted)' }}>
                         Your email app should be open. Just hit send!
                       </p>

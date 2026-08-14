@@ -65,7 +65,7 @@ export default function Navbar() {
           background: scrolled ? 'rgba(5,5,15,0.82)' : 'transparent',
           backdropFilter: scrolled ? 'blur(24px)' : 'none',
           WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(212,175,55,0.12)' : '1px solid transparent',
+          borderBottom: scrolled ? '1px solid rgba(69,214,197,0.12)' : '1px solid transparent',
         }}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-6 flex items-center justify-between" style={{ height: 68 }}>
@@ -77,7 +77,7 @@ export default function Navbar() {
             className="font-display font-black text-xl tracking-tight gradient-text relative z-10"
             whileHover={{ scale: 1.05 }}
           >
-            UR<span style={{ color: 'rgba(212,175,55,0.4)' }}>.</span>
+            UR<span style={{ color: 'rgba(69,214,197,0.4)' }}>.</span>
           </motion.a>
 
           {/* Desktop Nav */}
@@ -90,13 +90,13 @@ export default function Navbar() {
                   key={href} href={href}
                   onClick={() => handleNavClick(id)}
                   className="relative px-4 py-2 text-sm font-medium transition-all duration-200 group"
-                  style={{ color: isActive ? '#F5D67B' : 'rgba(245,245,245,0.5)' }}
+                  style={{ color: isActive ? '#A9B8FF' : 'rgba(245,245,245,0.5)' }}
                 >
                   <span className="relative z-10">{label}</span>
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px transition-all duration-300"
-                    style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)', width: isActive ? '60%' : '0%' }} />
+                    style={{ background: 'linear-gradient(90deg, #45D6C5, #A9B8FF)', width: isActive ? '60%' : '0%' }} />
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 h-px opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    style={{ background: 'linear-gradient(90deg, #D4AF37, #F5D67B)', width: '40%' }} />
+                    style={{ background: 'linear-gradient(90deg, #45D6C5, #A9B8FF)', width: '40%' }} />
                 </a>
               );
             })}
@@ -110,7 +110,7 @@ export default function Navbar() {
             ].map(({ href, label, Icon }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                 className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 gold-border"
-                style={{ background: 'rgba(212,175,55,0.06)', color: 'rgba(212,175,55,0.7)' }}
+                style={{ background: 'rgba(69,214,197,0.06)', color: 'rgba(69,214,197,0.7)' }}
                 aria-label={label}>
                 <Icon size={15} />
               </a>
@@ -125,9 +125,9 @@ export default function Navbar() {
             id="mobile-menu-toggle"
             className="md:hidden relative z-[60] w-11 h-11 rounded-xl flex flex-col items-center justify-center gap-1.5"
             style={{
-              background: mobileOpen ? 'rgba(212,175,55,0.12)' : 'rgba(212,175,55,0.06)',
-              border: '1px solid rgba(212,175,55,0.25)',
-              color: 'rgba(212,175,55,0.9)',
+              background: mobileOpen ? 'rgba(69,214,197,0.12)' : 'rgba(69,214,197,0.06)',
+              border: '1px solid rgba(69,214,197,0.25)',
+              color: 'rgba(69,214,197,0.9)',
             }}
             onClick={() => setMobileOpen(v => !v)}
             aria-label="Toggle menu"
@@ -182,26 +182,26 @@ export default function Navbar() {
                 background: 'rgba(5,5,15,0.97)',
                 backdropFilter: 'blur(40px)',
                 WebkitBackdropFilter: 'blur(40px)',
-                borderLeft: '1px solid rgba(212,175,55,0.18)',
-                boxShadow: '-20px 0 80px rgba(0,0,0,0.6), -2px 0 0 rgba(212,175,55,0.1)',
+                borderLeft: '1px solid rgba(69,214,197,0.18)',
+                boxShadow: '-20px 0 80px rgba(0,0,0,0.6), -2px 0 0 rgba(69,214,197,0.1)',
               }}
             >
               {/* Corner gold accent */}
               <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at top right, rgba(212,175,55,0.15), transparent 70%)' }} />
+                style={{ background: 'radial-gradient(ellipse at top right, rgba(69,214,197,0.15), transparent 70%)' }} />
               <div className="absolute bottom-0 left-0 w-40 h-40 pointer-events-none"
-                style={{ background: 'radial-gradient(ellipse at bottom left, rgba(212,175,55,0.07), transparent 70%)' }} />
+                style={{ background: 'radial-gradient(ellipse at bottom left, rgba(69,214,197,0.07), transparent 70%)' }} />
 
               {/* Header row */}
               <div className="flex items-center justify-between px-6 pt-6 pb-4"
-                style={{ borderBottom: '1px solid rgba(212,175,55,0.1)' }}>
+                style={{ borderBottom: '1px solid rgba(69,214,197,0.1)' }}>
                 <span className="font-display font-black text-xl gradient-text">
-                  UR<span style={{ color: 'rgba(212,175,55,0.35)' }}>.</span>
+                  UR<span style={{ color: 'rgba(69,214,197,0.35)' }}>.</span>
                 </span>
                 <motion.button
                   onClick={closeMenu}
                   className="w-9 h-9 rounded-lg flex items-center justify-center"
-                  style={{ background: 'rgba(212,175,55,0.08)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.8)' }}
+                  style={{ background: 'rgba(69,214,197,0.08)', border: '1px solid rgba(69,214,197,0.2)', color: 'rgba(69,214,197,0.8)' }}
                   whileTap={{ scale: 0.9 }}>
                   <X size={16} />
                 </motion.button>
@@ -221,8 +221,8 @@ export default function Navbar() {
                       transition={{ delay: 0.05 + i * 0.07, type: 'spring', stiffness: 300, damping: 30 }}
                       className="flex items-center gap-4 px-4 py-4 rounded-xl relative group overflow-hidden"
                       style={{
-                        background: isActive ? 'rgba(212,175,55,0.1)' : 'transparent',
-                        border: `1px solid ${isActive ? 'rgba(212,175,55,0.3)' : 'transparent'}`,
+                        background: isActive ? 'rgba(69,214,197,0.1)' : 'transparent',
+                        border: `1px solid ${isActive ? 'rgba(69,214,197,0.3)' : 'transparent'}`,
                         transition: 'all 0.2s',
                       }}
                       whileHover={{ x: 6 } as any}
@@ -230,12 +230,12 @@ export default function Navbar() {
                     >
                       {/* Number */}
                       <span className="font-mono text-xs tabular-nums flex-shrink-0"
-                        style={{ color: 'rgba(212,175,55,0.45)', fontFamily: 'var(--font-mono)' }}>
+                        style={{ color: 'rgba(69,214,197,0.45)', fontFamily: 'var(--font-mono)' }}>
                         {num}
                       </span>
                       {/* Label */}
                       <span className="font-display font-bold text-lg"
-                        style={{ color: isActive ? '#F5D67B' : 'rgba(245,245,245,0.8)' }}>
+                        style={{ color: isActive ? '#A9B8FF' : 'rgba(245,245,245,0.8)' }}>
                         {label}
                       </span>
                       {/* Active indicator */}
@@ -243,19 +243,19 @@ export default function Navbar() {
                         <motion.div
                           layoutId="activeIndicator"
                           className="ml-auto w-1.5 h-1.5 rounded-full"
-                          style={{ background: '#D4AF37', boxShadow: '0 0 8px #D4AF37' }}
+                          style={{ background: '#45D6C5', boxShadow: '0 0 8px #45D6C5' }}
                         />
                       )}
                       {/* Hover sweep */}
                       <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        style={{ background: 'rgba(212,175,55,0.04)', borderRadius: 12 }} />
+                        style={{ background: 'rgba(69,214,197,0.04)', borderRadius: 12 }} />
                     </motion.a>
                   );
                 })}
               </nav>
 
               {/* Bottom section */}
-              <div className="px-5 pb-8 pt-4" style={{ borderTop: '1px solid rgba(212,175,55,0.1)' }}>
+              <div className="px-5 pb-8 pt-4" style={{ borderTop: '1px solid rgba(69,214,197,0.1)' }}>
                 {/* Social row */}
                 <div className="flex gap-3 mb-4">
                   {[
@@ -272,7 +272,7 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4 + i * 0.06 }}
                       className="flex-1 h-11 rounded-xl flex items-center justify-center"
-                      style={{ background: 'rgba(212,175,55,0.07)', border: '1px solid rgba(212,175,55,0.2)', color: 'rgba(212,175,55,0.8)' }}
+                      style={{ background: 'rgba(69,214,197,0.07)', border: '1px solid rgba(69,214,197,0.2)', color: 'rgba(69,214,197,0.8)' }}
                       whileTap={{ scale: 0.93 }}
                     >
                       <Icon size={16} />
@@ -292,7 +292,7 @@ export default function Navbar() {
                   Hire Me
                 </motion.a>
                 {/* Mono label */}
-                <p className="text-center mt-4 text-xs" style={{ fontFamily: 'var(--font-mono)', color: 'rgba(212,175,55,0.3)', letterSpacing: '0.15em' }}>
+                <p className="text-center mt-4 text-xs" style={{ fontFamily: 'var(--font-mono)', color: 'rgba(69,214,197,0.3)', letterSpacing: '0.15em' }}>
                   UMER RAUF · PORTFOLIO
                 </p>
               </div>

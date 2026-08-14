@@ -42,7 +42,7 @@ function AnimatedHeroName() {
       opacity: 0, 
       y: -60, 
       color: 'transparent', 
-      WebkitTextStroke: '1.5px #D4AF37'
+      WebkitTextStroke: '1.5px #45D6C5'
     },
     visible: {
       opacity: 1, 
@@ -50,8 +50,8 @@ function AnimatedHeroName() {
       transition: { type: 'spring' as const, damping: 12, stiffness: 100 }
     },
     filled: {
-      color: '#F5D67B',
-      WebkitTextStroke: '0px #D4AF37',
+      color: '#A9B8FF',
+      WebkitTextStroke: '0px #45D6C5',
       transition: { duration: 0.4 }
     }
   } as unknown as Variants;
@@ -126,7 +126,7 @@ function TypewriterRole() {
         style={{
           height: '1em',
           verticalAlign: 'text-bottom',
-          background: 'linear-gradient(180deg, #D4AF37, #F5D67B)',
+          background: 'linear-gradient(180deg, #45D6C5, #A9B8FF)',
           animation: 'cursorBlink 0.8s step-end infinite',
         }}
       />
@@ -162,7 +162,7 @@ export default function Hero() {
 
       {/* Ambient glow — visible on top of the galaxy */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, rgba(212,175,55,0.07), transparent 70%)', filter: 'blur(60px)', zIndex: 2 }} />
+        style={{ background: 'radial-gradient(ellipse, rgba(69,214,197,0.07), transparent 70%)', filter: 'blur(60px)', zIndex: 2 }} />
 
       {/* Content */}
       <motion.div style={{ y, opacity, zIndex: 10 }} className="relative text-center flex flex-col items-center pt-20 pb-8 px-5">
@@ -178,7 +178,7 @@ export default function Hero() {
             {/* Badge */}
             <motion.div variants={{ hidden: { opacity:0, y:20 }, visible: { opacity:1, y:0, transition:{ duration:0.6 } } }}>
               <span className="inline-flex items-center gap-2 px-4 py-1.5 text-xs tracking-widest uppercase"
-                style={{ fontFamily:'var(--font-mono)', background:'rgba(212,175,55,0.08)', border:'1px solid rgba(212,175,55,0.3)', color:'#F5D67B', borderRadius: 4 }}>
+                style={{ fontFamily:'var(--font-mono)', background:'rgba(69,214,197,0.08)', border:'1px solid rgba(69,214,197,0.3)', color:'#A9B8FF', borderRadius: 4 }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Available for opportunities
               </span>
@@ -186,13 +186,13 @@ export default function Hero() {
 
           {/* Role */}
           <motion.div variants={{ hidden: { opacity:0, y:16 }, visible: { opacity:1, y:0, transition:{ duration:0.6 } } }}>
-            <p className="font-display text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#F5D67B', letterSpacing: '-0.01em', minHeight: '1.4em' }}>
+            <p className="font-display text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#A9B8FF', letterSpacing: '-0.01em', minHeight: '1.4em' }}>
               <TypewriterRole />
             </p>
             <p className="mt-2 text-sm sm:text-base" style={{ color: 'rgba(245,245,245,0.55)', fontFamily:'var(--font-mono)', letterSpacing:'0.05em' }}>
               React · TypeScript · Node.js · AI
             </p>
-            <p className="mt-1 text-xs sm:text-sm flex items-center justify-center gap-1.5" style={{ color: 'rgba(212,175,55,0.55)' }}>
+            <p className="mt-1 text-xs sm:text-sm flex items-center justify-center gap-1.5" style={{ color: 'rgba(69,214,197,0.55)' }}>
               <MapPin size={12} /> University of Siegen, Germany
             </p>
           </motion.div>
@@ -223,7 +223,7 @@ export default function Hero() {
                 rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                 aria-label={label}
                 className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-lg transition-all duration-300 gold-border"
-                style={{ background:'rgba(212,175,55,0.06)', color:'rgba(212,175,55,0.8)' }}
+                style={{ background:'rgba(69,214,197,0.06)', color:'rgba(69,214,197,0.8)' }}
                 whileHover={{ scale:1.1, y:-3 }} whileTap={{ scale:0.95 }}
               >
                 <Icon size={16} />
@@ -262,7 +262,7 @@ export default function Hero() {
                 >
                   <span
                     className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold"
-                    style={{ background:'rgba(212,175,55,0.1)', border:'1px solid rgba(212,175,55,0.25)', color:'#F5D67B', whiteSpace:'nowrap' }}
+                    style={{ background:'rgba(69,214,197,0.1)', border:'1px solid rgba(69,214,197,0.25)', color:'#A9B8FF', whiteSpace:'nowrap' }}
                   >{label}</span>
                 </div>
               </motion.div>
@@ -277,9 +277,9 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
         initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:2.5, duration:1 }}
       >
-        <span style={{ fontFamily:'var(--font-mono)', fontSize:9, color:'rgba(212,175,55,0.4)', letterSpacing:'0.4em' }}>SCROLL</span>
+        <span style={{ fontFamily:'var(--font-mono)', fontSize:9, color:'rgba(69,214,197,0.4)', letterSpacing:'0.4em' }}>SCROLL</span>
         <motion.div animate={{ y:[0,8,0] }} transition={{ repeat:Infinity, duration:1.5 }}>
-          <ArrowDown size={14} style={{ color:'rgba(212,175,55,0.4)' }} />
+          <ArrowDown size={14} style={{ color:'rgba(69,214,197,0.4)' }} />
         </motion.div>
       </motion.div>
     </section>
