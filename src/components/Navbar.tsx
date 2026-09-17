@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Mail } from 'lucide-react';
+import { Menu, X, Mail, FileText } from 'lucide-react';
 import { useGalaxyStore, type SectionId } from '../store/useGalaxyStore';
 
 function GitHubIcon({ size = 16 }: { size?: number }) {
@@ -115,6 +115,16 @@ export default function Navbar() {
                 <Icon size={15} />
               </a>
             ))}
+            <a
+              href="/Umer-Rauf-CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary py-2 px-4 text-sm"
+              aria-label="View Umer Rauf's CV in a new tab"
+            >
+              <FileText size={15} />
+              View CV
+            </a>
             <a href="mailto:umerrauf6@gmail.com" className="btn-primary py-2 px-5 text-sm">
               Hire Me
             </a>
@@ -279,7 +289,21 @@ export default function Navbar() {
                     </motion.a>
                   ))}
                 </div>
-                {/* CTA */}
+                {/* CTAs */}
+                <motion.a
+                  href="/Umer-Rauf-CV.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.52 }}
+                  className="btn-secondary w-full justify-center text-sm py-3 mb-3"
+                  onClick={closeMenu}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  <FileText size={16} />
+                  View CV
+                </motion.a>
                 <motion.a
                   href="mailto:umerrauf6@gmail.com"
                   initial={{ opacity: 0, y: 10 }}

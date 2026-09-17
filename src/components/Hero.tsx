@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, useScroll, useTransform, useAnimation, type Variants } from 'framer-motion';
-import { ArrowDown, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowDown, Phone, Mail, MapPin, FileText } from 'lucide-react';
 import { useGalaxyStore } from '../store/useGalaxyStore';
 
 /* ─── Animated Hero Name ─── */
@@ -203,7 +203,16 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center"
           >
             <a href="#projects" className="btn-primary justify-center">View Projects</a>
-            <a href="#contact"  className="btn-secondary justify-center">Hire Me</a>
+            <a
+              href="/Umer-Rauf-CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-secondary justify-center"
+              aria-label="View Umer Rauf's CV in a new tab"
+            >
+              <FileText size={16} />
+              View CV
+            </a>
           </motion.div>
 
           {/* Social links */}
