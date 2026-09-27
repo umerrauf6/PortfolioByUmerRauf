@@ -25,36 +25,76 @@ function GitHubIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-const projects = [
+type Project = {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  tech: string[];
+  accentColor: string;
+  accentRGB: string;
+  status: string;
+  live?: string;
+  github?: string;
+  screenMark: string;
+  screenLabel: string;
+};
+
+const projects: Project[] = [
   {
-    id: 'llm-chat',
-    title: 'AI Chat Platform',
-    subtitle: 'LLM API Integration',
-    description: 'Full-stack AI chat assistant with real-time streaming completions, document parsing, and multi-model support using OpenAI and Anthropic APIs.',
-    tech: ['Next.js', 'TypeScript', 'Node.js', 'LLM APIs', 'MongoDB'],
+    id: 'track-ai',
+    title: 'Track AI',
+    subtitle: 'Email intelligence platform',
+    description: 'A full-stack platform that imports Gmail messages, classifies unstructured content with Grok, validates the output, and presents structured results in one dashboard.',
+    tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'Prisma', 'Grok API', 'Gmail API'],
     accentColor: '#45D6C5', accentRGB: '69,214,197',
-    status: 'Production', github: 'https://github.com/umerrauf6',
-    screenEmoji: '🤖', screenLabel: 'AI Chat Platform', year: '2024',
+    status: 'Live',
+    live: 'https://track-ai-one.vercel.app/',
+    screenMark: 'AI', screenLabel: 'Email classification',
   },
   {
-    id: 'b2b-platform',
-    title: 'B2B SaaS Dashboard',
-    subtitle: 'Full-Stack Web Application',
-    description: 'Highly responsive dashboard built for B2B clients featuring complex data visualizations, role-based access control, and real-time analytics.',
-    tech: ['React', 'Node.js', 'MongoDB', 'REST APIs', 'Agile'],
+    id: 'gym-tracker',
+    title: 'GymTracker',
+    subtitle: 'Workout management SaaS',
+    description: 'A subscription-based fitness platform with passwordless authentication, protected workout data, account workflows, and Stripe payment-state management.',
+    tech: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL', 'Stripe', 'Motion'],
     accentColor: '#A9B8FF', accentRGB: '169,184,255',
-    status: 'Client Project', github: 'https://github.com/umerrauf6',
-    screenEmoji: '📊', screenLabel: 'SaaS Dashboard', year: '2024',
+    status: 'Live SaaS',
+    live: 'https://gym-tracker-rose-pi.vercel.app/',
+    github: 'https://github.com/umerrauf6/Gym-Tracker',
+    screenMark: 'GT', screenLabel: 'Training & subscriptions',
   },
   {
-    id: 'nestjs-api',
-    title: 'RESTful API Backend',
-    subtitle: 'NestJS & TypeScript',
-    description: 'Scalable NestJS backend with TypeScript, JWT authentication, MongoDB integration, input validation, and comprehensive API documentation.',
-    tech: ['NestJS', 'TypeScript', 'MongoDB', 'JWT', 'REST APIs'],
+    id: 'serverless-crm',
+    title: 'Serverless CRM Platform',
+    subtitle: 'Cloud customer management',
+    description: 'A lightweight CRM that connects a React interface to modular Node.js services on AWS Lambda, with scalable customer records stored in DynamoDB.',
+    tech: ['React', 'TypeScript', 'Node.js', 'AWS Lambda', 'DynamoDB', 'REST APIs'],
     accentColor: '#45D6C5', accentRGB: '69,214,197',
-    status: 'Open Source', github: 'https://github.com/umerrauf6',
-    screenEmoji: '⚡', screenLabel: 'REST API', year: '2023',
+    status: 'Live',
+    live: 'https://serverless-crm.vercel.app/',
+    screenMark: 'CRM', screenLabel: 'Serverless workflows',
+  },
+  {
+    id: 'unet-segmentation',
+    title: 'U-Net Cancer Cell Segmentation',
+    subtitle: 'Medical image analysis',
+    description: 'A university research project exploring cancer-cell segmentation with U-Net, including image and mask preprocessing, training, validation, overlap metrics, and error analysis.',
+    tech: ['Python', 'U-Net', 'Deep Learning', 'Computer Vision', 'Image Processing'],
+    accentColor: '#A9B8FF', accentRGB: '169,184,255',
+    status: 'Academic',
+    screenMark: 'U·N', screenLabel: 'Cell segmentation',
+  },
+  {
+    id: 'portfolio',
+    title: '3D Developer Portfolio',
+    subtitle: 'Interactive web experience',
+    description: 'This responsive portfolio, built as a reusable React system with an interactive Three.js scene, React Three Fiber integration, and Framer Motion transitions.',
+    tech: ['React', 'TypeScript', 'Three.js', 'React Three Fiber', 'Framer Motion', 'Netlify'],
+    accentColor: '#45D6C5', accentRGB: '69,214,197',
+    status: 'Live',
+    live: 'https://umer-rauf-portfolio.netlify.app/',
+    screenMark: '3D', screenLabel: 'Developer portfolio',
   },
 ];
 
@@ -177,8 +217,8 @@ export default function Projects() {
                     {/* Mobile header row: emoji + counter + status */}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <span style={{ fontSize: 32, filter: `drop-shadow(0 0 10px rgba(${project.accentRGB},0.5))` }}>
-                          {project.screenEmoji}
+                        <span style={{ fontFamily: 'var(--font-display)', fontSize: 24, lineHeight: 1, fontWeight: 900, letterSpacing: '-0.06em', color: project.accentColor, filter: `drop-shadow(0 0 10px rgba(${project.accentRGB},0.5))` }}>
+                          {project.screenMark}
                         </span>
                         <div>
                           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.85 }}>
@@ -213,18 +253,28 @@ export default function Projects() {
                     <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${project.accentRGB},0.25), transparent)` }} />
 
                     {/* Buttons */}
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="btn-secondary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
-                        whileTap={{ scale: 0.96 }}>
-                        <GitHubIcon size={12} /> Code
-                      </motion.a>
-                      <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                        className="btn-primary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
-                        whileTap={{ scale: 0.96 }}>
-                        <ExternalLink size={12} /> Details
-                      </motion.a>
-                    </div>
+                    {(project.github || project.live) ? (
+                      <div style={{ display: 'flex', gap: 8 }}>
+                        {project.github && (
+                          <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
+                            className="btn-secondary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
+                            whileTap={{ scale: 0.96 }}>
+                            <GitHubIcon size={12} /> Source
+                          </motion.a>
+                        )}
+                        {project.live && (
+                          <motion.a href={project.live} target="_blank" rel="noopener noreferrer"
+                            className="btn-primary" style={{ padding: '8px 16px', fontSize: 11, flex: 1, justifyContent: 'center' }}
+                            whileTap={{ scale: 0.96 }}>
+                            <ExternalLink size={12} /> Visit live
+                          </motion.a>
+                        )}
+                      </div>
+                    ) : (
+                      <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, letterSpacing: '0.14em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.7 }}>
+                        University research project
+                      </p>
+                    )}
                   </div>
                 ) : (
                   /* ── DESKTOP: two-panel side-by-side ── */
@@ -245,8 +295,8 @@ export default function Projects() {
                         </span>
                       </div>
                       <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.6 }}
-                        style={{ fontSize: 52, lineHeight: 1, filter: `drop-shadow(0 0 18px rgba(${project.accentRGB},0.5))` }}>
-                        {project.screenEmoji}
+                        style={{ fontFamily: 'var(--font-display)', fontSize: 44, lineHeight: 1, fontWeight: 900, letterSpacing: '-0.07em', color: project.accentColor, filter: `drop-shadow(0 0 18px rgba(${project.accentRGB},0.5))` }}>
+                        {project.screenMark}
                       </motion.div>
                       <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.8 }}>
                         {project.screenLabel}
@@ -275,18 +325,28 @@ export default function Projects() {
                         {project.tech.map(t => <span key={t} className="tech-tag">{t}</span>)}
                       </div>
                       <div style={{ height: 1, background: `linear-gradient(90deg, rgba(${project.accentRGB},0.2), transparent)` }} />
-                      <div style={{ display: 'flex', gap: 10 }}>
-                        <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                          className="btn-secondary" style={{ padding: '9px 18px', fontSize: 12 }}
-                          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                          <GitHubIcon size={13} /> View Code
-                        </motion.a>
-                        <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
-                          className="btn-primary" style={{ padding: '9px 18px', fontSize: 12 }}
-                          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                          <ExternalLink size={13} /> Details
-                        </motion.a>
-                      </div>
+                      {(project.github || project.live) ? (
+                        <div style={{ display: 'flex', gap: 10 }}>
+                          {project.github && (
+                            <motion.a href={project.github} target="_blank" rel="noopener noreferrer"
+                              className="btn-secondary" style={{ padding: '9px 18px', fontSize: 12 }}
+                              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                              <GitHubIcon size={13} /> View source
+                            </motion.a>
+                          )}
+                          {project.live && (
+                            <motion.a href={project.live} target="_blank" rel="noopener noreferrer"
+                              className="btn-primary" style={{ padding: '9px 18px', fontSize: 12 }}
+                              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                              <ExternalLink size={13} /> Visit live
+                            </motion.a>
+                          )}
+                        </div>
+                      ) : (
+                        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: project.accentColor, opacity: 0.72 }}>
+                          University research project · No public demo
+                        </p>
+                      )}
                     </div>
                   </div>
                 )}
