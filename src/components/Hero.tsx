@@ -204,14 +204,14 @@ export default function Hero() {
           >
             <a href="#projects" className="btn-primary justify-center">View Projects</a>
             <a
-              href="/Umer-Rauf-CV.pdf"
+              href="/General%20CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-secondary justify-center"
-              aria-label="View Umer Rauf's CV in a new tab"
+              aria-label="View General CV in a new tab"
             >
               <FileText size={16} />
-              View CV
+              General CV
             </a>
           </motion.div>
 

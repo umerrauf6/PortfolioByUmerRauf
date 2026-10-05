@@ -116,14 +116,14 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="/Umer-Rauf-CV.pdf"
+              href="/General%20CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-secondary py-2 px-4 text-sm"
-              aria-label="View Umer Rauf's CV in a new tab"
+              aria-label="View General CV in a new tab"
             >
               <FileText size={15} />
-              View CV
+              General CV
             </a>
             <a href="mailto:umerrauf6@gmail.com" className="btn-primary py-2 px-5 text-sm">
               Hire Me
